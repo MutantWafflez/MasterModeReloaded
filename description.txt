@@ -1,1 +1,14 @@
-Master Mode Reloaded is a pretty cool mod, it does...this. Modify this file with a description of your mod.
+This mod completely throws out vanilla Master Mode and builds it from the ground up to be more fleshed out as a proper difficulty, much like Expert Mode.
+
+As it stands, in Vanilla, all Master Mode does is boost enemy stats and (spoilers) gives out pets/relics for defeating bosses. It offers absolutely nothing new the table like Expert Mode, so this is where this mod comes in.
+
+Here are the main changes that make Master Mode more difficult than Expert Mode, but ideally more fun/statisfying:
+*Enemy stats are at their Expert level (configurable)
+*Debuff time is reverted back to its Expert level (configurable)
+*Adding additional AI to all of the bosses and many regular enemies
+*Adding several new mechanics and debuffs to the environment and enemies
+*Additional Master Mode items that can either be weapons/accessories from bosses
+*Rewards for players who can survive in mediumcore/hardcore Master Mode
+*Other miscellaneous changes which can be seen on the wiki
+
+Note: This mod changes nothing if the world is not in Master Mode.
