@@ -1,21 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace MasterModeReloaded.NPCs.Bosses {
 
     public class KingSlime : MMRGlobalNPC {
 
         private float SlamTimer {
-            get { return moddedAI[0]; }
-            set { moddedAI[0] = value; }
+            get => moddedAI[0];
+            set => moddedAI[0] = value;
         }
 
         private bool IsSlamming {
@@ -24,7 +18,7 @@ namespace MasterModeReloaded.NPCs.Bosses {
                 if (moddedAI[1] == 1f) { return true; }
                 else { return false; }
             }
-            set { moddedAI[1] = value.ToInt(); }
+            set => moddedAI[1] = value.ToInt();
         }
 
         public override void PreVanillaAI(NPC npc) {

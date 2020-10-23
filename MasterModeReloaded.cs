@@ -1,15 +1,12 @@
 using MasterModeReloaded.Enums;
 using MasterModeReloaded.NPCs;
-using MasterModeReloaded.Utils;
 using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace MasterModeReloaded
-{
-	public class MasterModeReloaded : Mod
-	{
+namespace MasterModeReloaded {
+    public class MasterModeReloaded : Mod {
         public override void Load() {
             #region Detours
             On.Terraria.NPC.VanillaAI += NPC_VanillaAI;
@@ -19,7 +16,7 @@ namespace MasterModeReloaded
         #region Netcode
         public override void HandlePacket(BinaryReader reader, int whoAmI) {
             PacketType messageType = (PacketType)reader.ReadByte();
-            switch(messageType) {
+            switch (messageType) {
                 case PacketType.SyncModdedAI:
                     if (Main.netMode == NetmodeID.MultiplayerClient) {
                         int npcIndex = reader.ReadInt32();

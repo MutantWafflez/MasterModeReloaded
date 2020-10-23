@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using MasterModeReloaded.Enums;
-using Terraria.ID;
+﻿using MasterModeReloaded.Enums;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace MasterModeReloaded.NPCs {
@@ -12,8 +9,6 @@ namespace MasterModeReloaded.NPCs {
         public float[] moddedAI = new float[NPC.maxAI];
 
         public override bool InstancePerEntity => true;
-
-        public int formerAIStyle = -1;
 
         #region AI Related
         /// <summary>

@@ -1,13 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MasterModeReloaded.Utils;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
-using MasterModeReloaded.Utils;
 
 namespace MasterModeReloaded.NPCs.Bosses {
     public class EyeOfCthulhu : MMRGlobalNPC {
@@ -18,7 +13,7 @@ namespace MasterModeReloaded.NPCs.Bosses {
                 if (moddedAI[0] == 1f) { return true; }
                 else { return false; }
             }
-            set { moddedAI[0] = value.ToInt(); }
+            set => moddedAI[0] = value.ToInt();
         }
 
         public override void PreVanillaAI(NPC npc) {
