@@ -1,0 +1,3 @@
+displayName = Master Mode Reloaded
+author = MutantWafflez
+version = 0.1
