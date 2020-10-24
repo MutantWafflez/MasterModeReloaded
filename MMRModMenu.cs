@@ -19,8 +19,8 @@ namespace MasterModeReloaded {
         public override string DisplayName => "Master Mode Reloaded";
 
         public override void Load() {
-            //Since the Update Method is called in the middle of the DrawMenu method and removes the ability to change eclipse boolean,
-            //gotta method "swap" it to go at the end of the method.
+            //Since the Update Method is called in the middle of the DrawMenu method and removes the ability to change the eclipse boolean,
+            //gotta method "swap" it to change the boolean at the end of the method.
             On.Terraria.Main.DrawMenu += Main_DrawMenu;
         }
 
