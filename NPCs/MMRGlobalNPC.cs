@@ -58,11 +58,11 @@ namespace MasterModeReloaded.NPCs {
 
         #region Damage Overrides
         public override void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit) {
-            
+
         }
 
         public override void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit) {
-            
+
         }
         #endregion
     }

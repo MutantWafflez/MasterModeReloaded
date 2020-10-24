@@ -1,12 +1,9 @@
 using MasterModeReloaded.Enums;
 using MasterModeReloaded.NPCs;
-using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Graphics.Shaders;
-using Terraria.Graphics.Effects;
 
 namespace MasterModeReloaded {
     public class MasterModeReloaded : Mod {

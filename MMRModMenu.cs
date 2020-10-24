@@ -1,16 +1,16 @@
-﻿using Terraria;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Terraria.ModLoader;
+using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace MasterModeReloaded {
-	public class MMRModMenu : ModMenu {
+    public class MMRModMenu : ModMenu {
 
-		private const string MENU_TEXTURE_PATH = nameof(MasterModeReloaded) + "/Textures";
+        private const string MENU_TEXTURE_PATH = nameof(MasterModeReloaded) + "/Textures";
 
-		public override Asset<Texture2D> Logo => ModContent.GetTexture($"{MENU_TEXTURE_PATH}/MMRLogo");
+        public override Asset<Texture2D> Logo => ModContent.GetTexture($"{MENU_TEXTURE_PATH}/MMRLogo");
 
         public override int Music => MusicID.Plantera;
 

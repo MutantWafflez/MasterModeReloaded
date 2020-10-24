@@ -1,7 +1,4 @@
 ﻿using Terraria;
-using System.Reflection;
-using System;
-using System.Linq;
 
 namespace MasterModeReloaded.NPCs {
     public abstract class MMRAI {
