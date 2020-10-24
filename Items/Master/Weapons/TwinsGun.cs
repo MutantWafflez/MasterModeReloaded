@@ -12,6 +12,7 @@ namespace MasterModeReloaded.Items.Master.Weapons {
 
         //TODO: Glowmask
         public override void SetStaticDefaults() {
+            DisplayName.SetDefault("The Amalgam");
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
             Tooltip.SetDefault("'Always watching {name here}, always watching...'");
         }
@@ -48,10 +49,10 @@ namespace MasterModeReloaded.Items.Master.Weapons {
             Vector2 shootVelocity = new Vector2(speedX, speedY);
 
             //Two friendly cursed flame projectiles skewed 10 degrees from the center of the gun
-            Projectile.NewProjectile(position, shootVelocity.RotatedBy(MathHelper.ToRadians(-10)), ModContent.ProjectileType<FriendlyEyeFire>(), (int)((float)damage * 1.25f), knockBack);
-            Projectile.NewProjectile(position, shootVelocity.RotatedBy(MathHelper.ToRadians(10)), ModContent.ProjectileType<FriendlyEyeFire>(), (int)((float)damage * 1.25f), knockBack);
+            Projectile.NewProjectile(position, shootVelocity.RotatedBy(MathHelper.ToRadians(-10)), ModContent.ProjectileType<FriendlyEyeFire>(), (int)(damage * 1.25f), knockBack, player.whoAmI);
+            Projectile.NewProjectile(position, shootVelocity.RotatedBy(MathHelper.ToRadians(10)), ModContent.ProjectileType<FriendlyEyeFire>(), (int)(damage  * 1.25f), knockBack, player.whoAmI);
 
-            return base.Shoot(player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack);
+            return true;
         }
     }
 }

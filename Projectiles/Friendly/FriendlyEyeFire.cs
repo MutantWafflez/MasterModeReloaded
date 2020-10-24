@@ -9,6 +9,8 @@ namespace MasterModeReloaded.Projectiles.Friendly {
 
         public override void SetDefaults() {
             projectile.CloneDefaults(ProjectileID.EyeFire);
+            projectile.width = 8;
+            projectile.height = 8;
             projectile.hostile = false;
             projectile.friendly = true;
             projectile.DamageType = DamageClass.Ranged;
