@@ -1,32 +1,47 @@
 ﻿using MasterModeReloaded.Enums;
+using MasterModeReloaded.NPCs.BossAI;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace MasterModeReloaded.NPCs {
-    public abstract class MMRGlobalNPC : GlobalNPC {
+    public class MMRGlobalNPC : GlobalNPC {
 
         public float[] moddedAI = new float[NPC.maxAI];
 
+        public MMRAI currentMMRAI;
+
         public override bool InstancePerEntity => true;
 
-        #region AI Related
-        /// <summary>
-        /// Custom AI method that calls before any given NPC's Vanilla AI, but after tML's PreAI hook.
-        /// Cannot prevent any AI from running. Will not run if tML PreAI returns false.
-        /// The call pattern is tML PreAI -> SpecialPreAI -> VanillaAI -> tML AI -> tml PostAI
-        /// </summary>
-        /// <param name="npc">NPC to have this method called for.</param>
-        public virtual void PreVanillaAI(NPC npc) { }
-
-        public override bool PreAI(NPC npc) {
-            if (base.PreAI(npc)) {
-                PreVanillaAI(npc);
+        public override GlobalNPC NewInstance(NPC npc) {
+            MMRGlobalNPC newNPC = (MMRGlobalNPC)base.NewInstance(npc);
+            switch (npc.type) {
+                case NPCID.KingSlime:
+                    newNPC.currentMMRAI = new KingSlime(npc);
+                    break;
+                case NPCID.EyeofCthulhu:
+                    newNPC.currentMMRAI = new EyeOfCthulhu(npc);
+                    break;
+                default:
+                    newNPC.currentMMRAI = null;
+                    break;
             }
-            return base.PreAI(npc);
+            return newNPC;
+        }
+
+        #region AI Related
+
+        public override void AI(NPC npc) {
+            if (Main.masterMode) {
+                currentMMRAI?.AI(npc);
+            }
+            base.AI(npc);
         }
 
         public override void PostAI(NPC npc) {
+            if (Main.masterMode) {
+                currentMMRAI?.PostAI(npc);
+            }
             if ((npc.netUpdate || npc.netAlways) && Main.netMode == NetmodeID.Server) {
                 var packet = Mod.GetPacket();
                 packet.Write((byte)PacketType.SyncModdedAI);
@@ -41,8 +56,14 @@ namespace MasterModeReloaded.NPCs {
         }
         #endregion
 
-        #region Miscellaneous Methods
+        #region Damage Overrides
+        public override void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit) {
+            
+        }
 
+        public override void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit) {
+            
+        }
         #endregion
     }
 }

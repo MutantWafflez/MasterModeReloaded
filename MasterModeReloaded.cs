@@ -1,14 +1,27 @@
 using MasterModeReloaded.Enums;
 using MasterModeReloaded.NPCs;
+using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.Graphics.Shaders;
+using Terraria.Graphics.Effects;
 
 namespace MasterModeReloaded {
     public class MasterModeReloaded : Mod {
         public override void Load() {
+
+            #region Shaders
+            if (Main.netMode != NetmodeID.Server) {
+                /*Ref<Effect> verticalRef = new Ref<Effect>((Effect)GetEffect("Effects/Filters/VerticalMirror"));
+                Filters.Scene["VerticalMirror"] = new Filter(new ScreenShaderData(verticalRef, "VerticallyMirror"), EffectPriority.Medium);
+                Filters.Scene["VerticalMirror"].Load();*/
+            }
+            #endregion
+
             #region Detours
+            //So the PreVanillaAI() method is called before the vanilla AI without touching PreAI()
             On.Terraria.NPC.VanillaAI += NPC_VanillaAI;
             #endregion
         }
@@ -35,10 +48,10 @@ namespace MasterModeReloaded {
 
         #region Detour Methods
         private void NPC_VanillaAI(On.Terraria.NPC.orig_VanillaAI orig, NPC self) {
-            /*MMRGlobalNPC globalNPC = self.GetGlobalNPC<MMRGlobalNPC>().SpecificGlobalNPCInstance;
-            if (globalNPC.PreAI(self)) {
-                globalNPC.PreVanillaAI(self);
-            }*/
+            MMRGlobalNPC globalNPC = self.GetGlobalNPC<MMRGlobalNPC>();
+            if (NPCLoader.PreAI(self) && Main.masterMode) {
+                globalNPC.currentMMRAI?.PreVanillaAI(self);
+            }
             orig(self);
         }
         #endregion
