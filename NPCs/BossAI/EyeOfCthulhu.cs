@@ -20,15 +20,14 @@ namespace MasterModeReloaded.NPCs.BossAI {
             currentNPC = npc;
         }
 
+        private void TeleDust(NPC npc) {
+            Dust dust;
+            Vector2 position = npc.position;
+            dust = Main.dust[Dust.NewDust(position, npc.width, npc.height, 55, 0f, 0f, 0, new Color(255, 255, 255), 1.5f)];
+            dust.noGravity = true;
+        }
+
         public override void PreVanillaAI(NPC npc) {
-
-            void TeleDust() {
-                Dust dust;
-                Vector2 position = npc.position;
-                dust = Main.dust[Dust.NewDust(position, npc.width, npc.height, 55, 0f, 0f, 0, new Color(255, 255, 255), 1.5f)];
-                dust.noGravity = true;
-            }
-
             if (!IsPhaseThree) {
                 //Enter Third Phase
                 if (npc.ai[0] == 3f && npc.life <= npc.lifeMax / 5) {
@@ -72,24 +71,26 @@ namespace MasterModeReloaded.NPCs.BossAI {
                 //Initial teleport, depending on npc.ai[3]
                 npc.TargetClosest(false);
                 if (npc.ai[2] == 0f) {
+                    Vector2 teleportPosition = new Vector2();
                     if (npc.ai[3] == 0f) {
                         //Top-left
-                        npc.Center = new Vector2(Main.player[npc.target].Center.X - (16 * 12), Main.player[npc.target].Center.Y - (16 * 12));
+                        teleportPosition = new Vector2(Main.player[npc.target].Center.X - (16 * 12) - npc.width, Main.player[npc.target].Center.Y - (16 * 12));
                         npc.ai[3] = 1f;
                     }
                     else {
                         //Top-right
-                        npc.Center = new Vector2(Main.player[npc.target].Center.X + (16 * 12), Main.player[npc.target].Center.Y - (16 * 12));
+                        teleportPosition = new Vector2(Main.player[npc.target].Center.X + (16 * 12), Main.player[npc.target].Center.Y - (16 * 12));
                         npc.ai[3] = 0f;
                     }
-                    npc.rotation = npc.DirectionTo(Main.player[npc.target].Center).ToRotation() - MathHelper.ToRadians(90);
+                    npc.Teleport(teleportPosition, -1);
+                    RotateTowardsPlayerCorrectly(npc, 90);
                     npc.alpha = 255;
                     npc.hide = false;
                 }
                 if (npc.ai[2] < 23f) {
-                    npc.rotation = npc.DirectionTo(Main.player[npc.target].Center).ToRotation() - MathHelper.ToRadians(90);
+                    RotateTowardsPlayerCorrectly(npc, 90);
                     npc.alpha -= 8;
-                    TeleDust();
+                    TeleDust(npc);
                 }
                 npc.ai[2]++;
                 //The actual Charge towards the target
@@ -108,12 +109,12 @@ namespace MasterModeReloaded.NPCs.BossAI {
                     npc.velocity *= 0.95f;
                     npc.ai[0] = 4f; //Revert alpha back into our control
                     npc.alpha += 8;
-                    TeleDust();
+                    TeleDust(npc);
                     if (npc.alpha > 255) {
                         npc.alpha = 255;
                         npc.hide = true;
                     }
-                    npc.rotation = npc.DirectionTo(Main.player[npc.target].Center).ToRotation() - MathHelper.ToRadians(90);
+                    RotateTowardsPlayerCorrectly(npc, 90);
                 }
             }
             else if (IsPhaseThree && npc.ai[2] > 75f) {
@@ -128,12 +129,11 @@ namespace MasterModeReloaded.NPCs.BossAI {
                 npc.netUpdate = true;
             }
             else {
-                npc.aiStyle = npc.GetAIStyle();
+                npc.aiStyle = npc.GetDefaultAIStyle();
             }
         }
 
         public override void AI(NPC npc) {
-            throw new System.NotImplementedException();
         }
 
         public override void PostAI(NPC npc) {
