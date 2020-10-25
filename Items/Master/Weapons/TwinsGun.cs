@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -32,7 +33,7 @@ namespace MasterModeReloaded.Items.Master.Weapons {
             item.value = Item.sellPrice(gold: 3);
             item.damage = 55;
             item.knockBack = 1.5f;
-            item.UseSound = SoundID.Item12;
+            item.UseSound = SoundID.Item157;
         }
 
         public override Vector2? HoldoutOffset() {
@@ -52,6 +53,7 @@ namespace MasterModeReloaded.Items.Master.Weapons {
             //Two friendly cursed flame projectiles skewed 10 degrees from the center of the gun
             Projectile.NewProjectile(position, shootVelocity.RotatedBy(MathHelper.ToRadians(-10)), ModContent.ProjectileType<FriendlyEyeFire>(), (int)(damage * 1.25f), knockBack, player.whoAmI);
             Projectile.NewProjectile(position, shootVelocity.RotatedBy(MathHelper.ToRadians(10)), ModContent.ProjectileType<FriendlyEyeFire>(), (int)(damage * 1.25f), knockBack, player.whoAmI);
+            SoundEngine.PlaySound(SoundID.Item34.WithVolume(0.75f), position);
 
             return true;
         }
