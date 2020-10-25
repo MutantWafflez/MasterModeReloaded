@@ -70,7 +70,7 @@ namespace MasterModeReloaded.NPCs.BossAI {
                     npc.velocity.X = 0f;
                     //As soon as gravity is applied (in the Vanilla AI), this triggers the velocity increase
                     if (npc.velocity.Y > 0 && npc.velocity.Y != 20f) {
-                        //There are a few bugs that can occur with Vanilla AI conflicting with our AI. So just turn it off temporarily!
+                        //Vanilla AI can be a bit finnicky past this point, and turning it off does no harm. Will be re-enabled the following tick!
                         npc.aiStyle = -1;
                         npc.velocity.Y = 20f;
                         //Gravity is turned off so that terminal velocity doesn't occur
