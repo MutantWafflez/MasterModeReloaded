@@ -14,7 +14,8 @@ namespace MasterModeReloaded.Items.Master.Weapons {
         public override void SetStaticDefaults() {
             DisplayName.SetDefault("The Amalgam");
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-            Tooltip.SetDefault("'Always watching {name here}, always watching...'");
+            Tooltip.SetDefault("Fires Death Lasers and Cursed Flames simultaneously" +
+                "\n'Always watching {name here}, always watching...'");
         }
 
         public override void SetDefaults() {
@@ -29,7 +30,7 @@ namespace MasterModeReloaded.Items.Master.Weapons {
             item.useTime = 16;
             item.rare = ModContent.RarityType<PsuedoMasterRarity>();
             item.value = Item.sellPrice(gold: 3);
-            item.damage = 40;
+            item.damage = 55;
             item.knockBack = 1.5f;
             item.UseSound = SoundID.Item12;
         }
@@ -39,9 +40,9 @@ namespace MasterModeReloaded.Items.Master.Weapons {
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips) {
-            var tooltip0 = tooltips.FirstOrDefault(l => l.Name == "Tooltip0" && l.mod == "Terraria");
-            if (tooltip0 != null) {
-                tooltip0.text = $"'Always watching {Main.LocalPlayer.name}, always watching...'";
+            var tooltip1 = tooltips.FirstOrDefault(l => l.Name == "Tooltip1" && l.mod == "Terraria");
+            if (tooltip1 != null) {
+                tooltip1.text = $"'Always watching {Main.LocalPlayer.name}, always watching...'";
             }
         }
 
