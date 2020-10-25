@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 namespace MasterModeReloaded.Commands {
     public class ItemCommand : ModCommand {
         public override CommandType Type
-            => CommandType.Chat;
+            => CommandType.World;
 
         public override string Command
             => "item";
