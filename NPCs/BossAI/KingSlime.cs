@@ -1,7 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using MasterModeReloaded.Projectiles.Hostile;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
+using Terraria.ModLoader;
+using MasterModeReloaded.Utils;
 
 namespace MasterModeReloaded.NPCs.BossAI {
 
@@ -25,15 +28,14 @@ namespace MasterModeReloaded.NPCs.BossAI {
             currentNPC = npc;
         }
 
+        private void DoTeleport(NPC npc) {
+            npc.ai[0] = 0f;
+            npc.ai[1] = 5f;
+            SlamTimer = 0f;
+            npc.netUpdate = true;
+        }
+
         public override void PreVanillaAI(NPC npc) {
-
-            void DoTeleport() {
-                npc.ai[0] = 0f;
-                npc.ai[1] = 5f;
-                SlamTimer = 0f;
-                npc.netUpdate = true;
-            }
-
             if (npc.life < npc.lifeMax / 2 && !Main.player[npc.target].dead) {
                 //Set the nearest player to be the "target"
                 Player target = Main.player[Player.FindClosest(npc.position, npc.width, npc.height)];
@@ -46,13 +48,13 @@ namespace MasterModeReloaded.NPCs.BossAI {
                 }
                 //Teleport cooldown based on health
                 if (SlamTimer >= 480f) {
-                    DoTeleport();
+                    DoTeleport(npc);
                 }
                 else if (npc.life < npc.lifeMax / 3 && SlamTimer >= 420f) {
-                    DoTeleport();
+                    DoTeleport(npc);
                 }
                 else if (npc.life < npc.lifeMax / 4 && SlamTimer >= 300f) {
-                    DoTeleport();
+                    DoTeleport(npc);
                 }
                 //Takes place right after King Slime re-appears
                 if (npc.ai[1] == 6f) {
@@ -68,20 +70,22 @@ namespace MasterModeReloaded.NPCs.BossAI {
                     npc.velocity.X = 0f;
                     //As soon as gravity is applied (in the Vanilla AI), this triggers the velocity increase
                     if (npc.velocity.Y > 0 && npc.velocity.Y != 20f) {
+                        //There are a few bugs that can occur with Vanilla AI conflicting with our AI. So just turn it off temporarily!
+                        npc.aiStyle = -1;
                         npc.velocity.Y = 20f;
                         //Gravity is turned off so that terminal velocity doesn't occur
                         npc.noGravity = true;
                     }
                 }
                 //So King Slime doesn't fall through the map
-                if (npc.noTileCollide && npc.Bottom.Y >= target.Bottom.Y) {
+                if (npc.noTileCollide && npc.Bottom.Y >= Center.Y) {
                     npc.noTileCollide = false;
                 }
                 //Hitting the ground code (Shockwave, stuck in the ground, etc.)
                 if (IsSlamming && npc.collideY) {
                     IsSlamming = false;
                     if (Main.netMode != NetmodeID.MultiplayerClient) {
-                        //Projectile.NewProjectile(new Vector2(npc.Center.X, npc.Bottom.Y), new Vector2(0, 0), ModContent.ProjectileType<Shockwave>(), 20, 3f);
+                        Projectile.NewProjectile(new Vector2(npc.Center.X, npc.Bottom.Y), new Vector2(0, 0), ModContent.ProjectileType<Shockwave>(), 20, 3f);
                         SoundEngine.PlaySound(SoundID.Item62, npc.Center);
                     }
                     //So the dust actually shows, just using the statement once barely shows any dust
@@ -95,7 +99,7 @@ namespace MasterModeReloaded.NPCs.BossAI {
                     npc.ai[0] = -300f;
                     npc.ai[1] = 3f;
                     //So it looks like King Slime is stuck in the ground (give it that OOMPH)
-                    npc.position.Y += 16f;
+                    npc.position.Y += 32f;
                     npc.behindTiles = true;
                     //Gravity is reverted back so King Slime doesn't fly around
                     npc.noGravity = false;
@@ -112,7 +116,13 @@ namespace MasterModeReloaded.NPCs.BossAI {
             }
         }
 
-        public override void AI(NPC npc) { }
+        public override void AI(NPC npc) { 
+            //This is in the AI hook here because the first tick after the slam has occurred, we don't want the rest of the Vanilla AI running for that tick,
+            //only the following tick. Thus, since this hook runs after Vanilla AI, Vanilla AI will be restored one tick after the slam.
+            if (!IsSlamming && npc.aiStyle == -1) {
+                npc.aiStyle = npc.GetDefaultAIStyle();
+            }
+        }
 
         public override void PostAI(NPC npc) { }
     }
