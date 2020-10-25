@@ -7,6 +7,9 @@ using Terraria.ModLoader;
 
 namespace MasterModeReloaded {
     public class MasterModeReloaded : Mod {
+
+        public const bool DebugMode = false;
+
         public override void Load() {
 
             #region Shaders

@@ -32,7 +32,7 @@ namespace MasterModeReloaded.NPCs {
         #region AI Related
 
         public override void AI(NPC npc) {
-            if (Main.masterMode) {
+            if (NPCLoader.PreAI(npc) && Main.masterMode) {
                 currentMMRAI?.AI(npc);
             }
             base.AI(npc);
@@ -51,6 +51,9 @@ namespace MasterModeReloaded.NPCs {
                 }
                 packet.Write(npc.aiStyle);
                 packet.Send();
+            }
+            if (MasterModeReloaded.DebugMode && !npc.friendly) {
+                Main.NewText($"{npc.TypeName}: {moddedAI[0]}, {moddedAI[1]}, {moddedAI[2]}, {moddedAI[3]}");
             }
             base.PostAI(npc);
         }
