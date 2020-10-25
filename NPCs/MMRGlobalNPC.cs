@@ -13,6 +13,17 @@ namespace MasterModeReloaded.NPCs {
 
         public override bool InstancePerEntity => true;
 
+        #region Defaults
+        public override void SetDefaults(NPC npc) {
+            if (Main.masterMode) {
+                if (npc.type == NPCID.Spazmatism || npc.type == NPCID.Retinazer) {
+                    //The twins share health. This is the value that will equal their Expert mode combined health
+                    //if stat boosts are disabled.
+                    npc.lifeMax = 43000;
+                }
+            }
+        }
+
         public override GlobalNPC NewInstance(NPC npc) {
             MMRGlobalNPC newNPC = (MMRGlobalNPC)base.NewInstance(npc);
             switch (npc.type) {
@@ -22,12 +33,19 @@ namespace MasterModeReloaded.NPCs {
                 case NPCID.EyeofCthulhu:
                     newNPC.currentMMRAI = new EyeOfCthulhu(npc);
                     break;
+                case NPCID.Spazmatism:
+                    newNPC.currentMMRAI = new Spazmatism(npc);
+                    break;
+                case NPCID.Retinazer:
+                    newNPC.currentMMRAI = new Retinazer(npc);
+                    break;
                 default:
                     newNPC.currentMMRAI = null;
                     break;
             }
             return newNPC;
         }
+        #endregion
 
         #region AI Related
 
@@ -53,19 +71,10 @@ namespace MasterModeReloaded.NPCs {
                 packet.Send();
             }
             if (MasterModeReloaded.DebugMode && !npc.friendly) {
-                Main.NewText($"{npc.TypeName}: {moddedAI[0]}, {moddedAI[1]}, {moddedAI[2]}, {moddedAI[3]}");
+                Main.NewText($"{npc.TypeName}: {npc.ai[0]}, {npc.ai[1]}, {npc.ai[2]}, {npc.ai[3]}" +
+                    $"\n{moddedAI[0]}, {moddedAI[1]}, {moddedAI[2]}, {moddedAI[3]}");
             }
             base.PostAI(npc);
-        }
-        #endregion
-
-        #region Damage Overrides
-        public override void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit) {
-
-        }
-
-        public override void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit) {
-
         }
         #endregion
     }
