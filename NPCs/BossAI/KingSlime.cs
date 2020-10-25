@@ -1,10 +1,10 @@
 ﻿using MasterModeReloaded.Projectiles.Hostile;
+using MasterModeReloaded.Utils;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using MasterModeReloaded.Utils;
 
 namespace MasterModeReloaded.NPCs.BossAI {
 
@@ -116,7 +116,7 @@ namespace MasterModeReloaded.NPCs.BossAI {
             }
         }
 
-        public override void AI(NPC npc) { 
+        public override void AI(NPC npc) {
             //This is in the AI hook here because the first tick after the slam has occurred, we don't want the rest of the Vanilla AI running for that tick,
             //only the following tick. Thus, since this hook runs after Vanilla AI, Vanilla AI will be restored one tick after the slam.
             if (!IsSlamming && npc.aiStyle == -1) {

@@ -1,11 +1,6 @@
 ﻿using MasterModeReloaded.Projectiles.Hostile;
 using MasterModeReloaded.Utils;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -105,7 +100,7 @@ namespace MasterModeReloaded.NPCs.BossAI {
 
                 //Whether or not spaz is in his "third phase" (just essentially do stuff at a faster rate such as encircle)
                 bool isPseudoThirdPhase = npc.life < npc.lifeMax * 0.25f;
- 
+
                 //Rotation value in radians to have the sprite face upwards
                 float upwardRotationValue = MathHelper.ToRadians(180);
                 //Rotation value in degrees used to determine how big the circle is in the EncirclementPhase
@@ -217,7 +212,7 @@ namespace MasterModeReloaded.NPCs.BossAI {
 
                         npc.netUpdate = true;
                     }
-                    
+
                 }
                 //Spazmatism rapidly begins encircling the target, creating a ring of cursed flames
                 else if (CirclePhase == EncirclementPhase) {
@@ -260,7 +255,7 @@ namespace MasterModeReloaded.NPCs.BossAI {
                     if (Main.netMode != NetmodeID.Server && npc.ai[2] % 22 == 0f) {
                         SoundEngine.PlaySound(SoundID.Item34, npc.position);
                     }
-  
+
                     if (GeneralTimer >= MathHelper.TwoPi * fullRotationCount) {
                         RestartTwins(npc);
                     }

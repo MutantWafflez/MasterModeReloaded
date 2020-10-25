@@ -1,18 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
 
-namespace MasterModeReloaded.Projectiles.Hostile
-{
-    public class Shockwave : ModProjectile
-    {
+namespace MasterModeReloaded.Projectiles.Hostile {
+    public class Shockwave : ModProjectile {
 
-        public override void SetStaticDefaults()
-        {
+        public override void SetStaticDefaults() {
             DisplayName.SetDefault("Shockwave");
         }
 
-        public override void SetDefaults()
-        {
+        public override void SetDefaults() {
             projectile.hostile = true;
             projectile.width = 288;
             projectile.height = 48;
