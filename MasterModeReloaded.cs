@@ -30,7 +30,7 @@ namespace MasterModeReloaded {
         public override void HandlePacket(BinaryReader reader, int whoAmI) {
             PacketType messageType = (PacketType)reader.ReadByte();
             switch (messageType) {
-                case PacketType.SyncModdedAI:
+                case PacketType.SyncModdedNPCAI:
                     if (Main.netMode == NetmodeID.MultiplayerClient) {
                         int npcIndex = reader.ReadInt32();
                         for (int i = 0; i < NPC.maxAI; i++) {

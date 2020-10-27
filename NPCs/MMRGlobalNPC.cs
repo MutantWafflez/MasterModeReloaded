@@ -39,6 +39,9 @@ namespace MasterModeReloaded.NPCs {
                 case NPCID.Retinazer:
                     newNPC.currentMMRAI = new Retinazer(npc);
                     break;
+                case NPCID.Plantera:
+                    newNPC.currentMMRAI = new Plantera(npc);
+                    break;
                 default:
                     newNPC.currentMMRAI = null;
                     break;
@@ -62,7 +65,7 @@ namespace MasterModeReloaded.NPCs {
             }
             if ((npc.netUpdate || npc.netAlways) && Main.netMode == NetmodeID.Server) {
                 var packet = Mod.GetPacket();
-                packet.Write((byte)PacketType.SyncModdedAI);
+                packet.Write((byte)PacketType.SyncModdedNPCAI);
                 packet.Write(npc.whoAmI);
                 for (int i = 0; i < NPC.maxAI; i++) {
                     packet.Write(moddedAI[i]);
