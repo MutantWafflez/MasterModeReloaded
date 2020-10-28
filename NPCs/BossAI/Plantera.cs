@@ -58,8 +58,7 @@ namespace MasterModeReloaded.NPCs.BossAI {
                         if (Main.netMode != NetmodeID.MultiplayerClient) {
                             for (int direction = 0; direction < 4; direction++) {
                                 HostileNettleBurst nettleBurst = (HostileNettleBurst)Projectile.NewProjectileDirect(npc.Center, Vector2.Zero, ModContent.ProjectileType<HostileNettleBurst>(), 30, 1f).modProjectile;
-                                nettleBurst.projectile.position = nettleBurst.projectile.Center;
-                                nettleBurst.psuedoVelocity = new Vector2(0, -32).RotatedBy(MathHelper.ToRadians(90) * direction);
+                                nettleBurst.psuedoVelocity = new Vector2(0, -nettleBurst.projectile.height).RotatedBy(MathHelper.ToRadians(90) * direction);
                                 NetMessage.SendData(MessageID.SyncProjectile, number: nettleBurst.projectile.whoAmI);
                             }
 
@@ -67,7 +66,7 @@ namespace MasterModeReloaded.NPCs.BossAI {
                         }
                     }
                     GeneralTimer++;
-                    if (GeneralTimer >= 60 * 5f) {
+                    if (GeneralTimer >= HostileNettleBurst.MaxTimeLeft) {
                         GeneralTimer = 0f;
                         CurrentSubPhase = NormalAIPhase;
 
