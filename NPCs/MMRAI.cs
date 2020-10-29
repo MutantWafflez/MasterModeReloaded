@@ -2,6 +2,9 @@
 using Terraria;
 
 namespace MasterModeReloaded.NPCs {
+    /// <summary>
+    /// Class that handles all AI changes for MMR.
+    /// </summary>
     public abstract class MMRAI {
 
         /// <summary>
@@ -10,8 +13,8 @@ namespace MasterModeReloaded.NPCs {
         public NPC currentNPC;
 
         /// <summary>
-        /// What NPC type will have the designated AI changes. For example, if this value is NPCID.EyeOfCthulhu, the EOC will have this
-        /// AI.
+        /// What NPC type will have the designated AI changes. For example, if this value is NPCID.EyeOfCthulhu, any instance of an
+        /// Eye of Cthulhu will have the designated AI bools run.
         /// </summary>
         public readonly int npcAIType;
 
@@ -19,12 +22,25 @@ namespace MasterModeReloaded.NPCs {
             npcAIType = npcType;
         }
 
+        /// <summary>
+        /// AI Hook that takes place just after PreAI Hook but before Vanilla AI. Exists purely so there isn't crossmod shenanigans
+        /// with the PreAI returning false in other mods. Will not run if PreAI returns false.
+        /// </summary>
         public abstract void PreVanillaAI(NPC npc);
 
+        /// <summary>
+        /// Same AI hook as the GlobalNPC class. Runs after Vanilla AI, but won't run if PreAI returns false.
+        /// </summary>
         public abstract void AI(NPC npc);
 
+        /// <summary>
+        /// Same PostAI hook as the GlobalNPC class. Runs after ALL the other AI hooks, regardless of what PreAI returns.
+        /// </summary>
         public abstract void PostAI(NPC npc);
 
+        /// <summary>
+        /// Shorthand method to retrieve this class' instanced NPC's MMR Global NPC (to get the moddedAI[] array values, for example)
+        /// </summary>
         public MMRGlobalNPC GetMMRGlobalNPC() {
             return currentNPC.GetGlobalNPC<MMRGlobalNPC>();
         }

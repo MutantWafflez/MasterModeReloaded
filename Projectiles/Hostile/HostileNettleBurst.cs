@@ -1,14 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -62,7 +56,7 @@ namespace MasterModeReloaded.Projectiles.Hostile {
             }
 
             projectile.ai[0] += appearanceRate;
-            if  (projectile.ai[0] >= 255 && projectile.ai[1] < MaxBurstLength && psuedoVelocity != Vector2.Zero) {
+            if (projectile.ai[0] >= 255 && projectile.ai[1] < MaxBurstLength && psuedoVelocity != Vector2.Zero) {
                 HostileNettleBurst nextSegment = (HostileNettleBurst)Projectile.NewProjectileDirect(projectile.Center + psuedoVelocity, Vector2.Zero, ModContent.ProjectileType<HostileNettleBurst>(), 30, 1f).modProjectile;
                 nextSegment.projectile.ai[1] = projectile.ai[1] += 1;
                 nextSegment.psuedoVelocity = psuedoVelocity;
@@ -80,7 +74,7 @@ namespace MasterModeReloaded.Projectiles.Hostile {
                 projectile.damage = 0;
                 projectile.alpha += 2;
             }
-		}
+        }
 
         public override void SendExtraAI(BinaryWriter writer) {
             writer.Write(psuedoVelocity.X);

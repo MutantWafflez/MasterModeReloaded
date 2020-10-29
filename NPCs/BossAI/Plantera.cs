@@ -1,7 +1,5 @@
 ﻿using MasterModeReloaded.Projectiles.Hostile;
-using MasterModeReloaded.Utils;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;

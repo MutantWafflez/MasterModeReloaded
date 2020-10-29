@@ -1,5 +1,4 @@
 ﻿using MasterModeReloaded.Enums;
-using MasterModeReloaded.NPCs.BossAI;
 using System.Linq;
 using Terraria;
 using Terraria.ID;
@@ -33,7 +32,7 @@ namespace MasterModeReloaded.NPCs {
                 newNPC.currentMMRAI = givenAI;
                 newNPC.currentMMRAI.currentNPC = npc;
             }
-            
+
             return newNPC;
         }
         #endregion
