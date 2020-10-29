@@ -4,7 +4,20 @@ using Terraria;
 namespace MasterModeReloaded.NPCs {
     public abstract class MMRAI {
 
+        /// <summary>
+        /// The instanced NPC this AI is attached to.
+        /// </summary>
         public NPC currentNPC;
+
+        /// <summary>
+        /// What NPC type will have the designated AI changes. For example, if this value is NPCID.EyeOfCthulhu, the EOC will have this
+        /// AI.
+        /// </summary>
+        public readonly int npcAIType;
+
+        public MMRAI(int npcType) {
+            npcAIType = npcType;
+        }
 
         public abstract void PreVanillaAI(NPC npc);
 

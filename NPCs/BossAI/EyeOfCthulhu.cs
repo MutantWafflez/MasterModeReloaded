@@ -16,9 +16,7 @@ namespace MasterModeReloaded.NPCs.BossAI {
             set => GetMMRGlobalNPC().moddedAI[0] = value.ToInt();
         }
 
-        public EyeOfCthulhu(NPC npc) {
-            currentNPC = npc;
-        }
+        public EyeOfCthulhu() : base(NPCID.EyeofCthulhu) { }
 
         private void TeleDust(NPC npc) {
             Dust dust;

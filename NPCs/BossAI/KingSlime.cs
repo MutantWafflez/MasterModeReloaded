@@ -10,12 +10,12 @@ namespace MasterModeReloaded.NPCs.BossAI {
 
     public class KingSlime : MMRAI {
 
-        private float SlamTimer {
+        public float SlamTimer {
             get => GetMMRGlobalNPC().moddedAI[0];
             set => GetMMRGlobalNPC().moddedAI[0] = value;
         }
 
-        private bool IsSlamming {
+        public bool IsSlamming {
             get
             {
                 if (GetMMRGlobalNPC().moddedAI[1] == 1f) { return true; }
@@ -24,9 +24,7 @@ namespace MasterModeReloaded.NPCs.BossAI {
             set => GetMMRGlobalNPC().moddedAI[1] = value.ToInt();
         }
 
-        public KingSlime(NPC npc) {
-            currentNPC = npc;
-        }
+        public KingSlime() : base(NPCID.KingSlime) { }
 
         private void DoTeleport(NPC npc) {
             npc.ai[0] = 0f;

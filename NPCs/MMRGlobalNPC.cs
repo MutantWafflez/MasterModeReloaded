@@ -1,5 +1,6 @@
 ﻿using MasterModeReloaded.Enums;
 using MasterModeReloaded.NPCs.BossAI;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -26,26 +27,13 @@ namespace MasterModeReloaded.NPCs {
 
         public override GlobalNPC NewInstance(NPC npc) {
             MMRGlobalNPC newNPC = (MMRGlobalNPC)base.NewInstance(npc);
-            switch (npc.type) {
-                case NPCID.KingSlime:
-                    newNPC.currentMMRAI = new KingSlime(npc);
-                    break;
-                case NPCID.EyeofCthulhu:
-                    newNPC.currentMMRAI = new EyeOfCthulhu(npc);
-                    break;
-                case NPCID.Spazmatism:
-                    newNPC.currentMMRAI = new Spazmatism(npc);
-                    break;
-                case NPCID.Retinazer:
-                    newNPC.currentMMRAI = new Retinazer(npc);
-                    break;
-                case NPCID.Plantera:
-                    newNPC.currentMMRAI = new Plantera(npc);
-                    break;
-                default:
-                    newNPC.currentMMRAI = null;
-                    break;
+
+            MMRAI givenAI = MasterModeReloaded.ListOfMMRAI.FirstOrDefault(ai => ai.npcAIType == npc.type);
+            if (givenAI != null) {
+                newNPC.currentMMRAI = givenAI;
+                newNPC.currentMMRAI.currentNPC = npc;
             }
+            
             return newNPC;
         }
         #endregion

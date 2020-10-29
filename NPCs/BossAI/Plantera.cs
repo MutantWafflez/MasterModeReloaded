@@ -24,9 +24,7 @@ namespace MasterModeReloaded.NPCs.BossAI {
         public const float NettleBurstWarningPhase = 1f;
         public const float NettleBurstPhase = 2f;
 
-        public Plantera(NPC npc) {
-            currentNPC = npc;
-        }
+        public Plantera() : base(NPCID.Plantera) { }
 
         public override void PreVanillaAI(NPC npc) {
             //Phase 1 only

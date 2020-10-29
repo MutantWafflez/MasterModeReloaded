@@ -22,15 +22,12 @@ namespace MasterModeReloaded.NPCs.BossAI {
             set => GetMMRGlobalNPC().moddedAI[2] = value;
         }
 
+        public Retinazer() : base(NPCID.Retinazer) { }
 
         public const float NormalAIPhase = 0f;
         public const float AlignToTargetPhase = 1f;
         public const float ChargeBarragePhase = 2f;
         public const float FireBarragePhase = 3f;
-
-        public Retinazer(NPC npc) {
-            currentNPC = npc;
-        }
 
         public override void PreVanillaAI(NPC npc) {
             //Will enter second phase at 60% health instead of 40%

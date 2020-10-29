@@ -1,6 +1,10 @@
 using MasterModeReloaded.Enums;
 using MasterModeReloaded.NPCs;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -10,6 +14,9 @@ namespace MasterModeReloaded {
 
         public const bool DebugMode = false;
 
+        public static List<MMRAI> ListOfMMRAI;
+
+        #region Loading
         public override void Load() {
 
             #region Shaders
@@ -25,6 +32,22 @@ namespace MasterModeReloaded {
             On.Terraria.NPC.VanillaAI += NPC_VanillaAI;
             #endregion
         }
+
+        public override void Unload() {
+            #region Static Resets
+            ListOfMMRAI = null;
+            #endregion
+        }
+
+        public override void PostSetupContent() {
+            ListOfMMRAI = new List<MMRAI>();
+
+            Type[] typesOfMMRAI = Assembly.GetExecutingAssembly().GetTypes().Where(m => m.IsSubclassOf(typeof(MMRAI))).ToArray();
+            foreach (Type mmrType in typesOfMMRAI) {
+                ListOfMMRAI.Add((MMRAI)mmrType.GetConstructor(Type.EmptyTypes).Invoke(null));
+            }
+        }
+        #endregion
 
         #region Netcode
         public override void HandlePacket(BinaryReader reader, int whoAmI) {
