@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 namespace MasterModeReloaded {
     public class MasterModeReloaded : Mod {
 
-        public const bool DebugMode = false;
+        public const bool DebugMode = true;
 
         public static List<Type> ListOfMMRAI;
 
