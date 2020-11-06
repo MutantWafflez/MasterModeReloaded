@@ -1,5 +1,5 @@
-using MasterModeReloaded.Enums;
-using MasterModeReloaded.NPCs;
+using MasterModeReloaded.Common.ID;
+using MasterModeReloaded.Content.NPCs;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -51,9 +51,9 @@ namespace MasterModeReloaded {
 
         #region Netcode
         public override void HandlePacket(BinaryReader reader, int whoAmI) {
-            PacketType messageType = (PacketType)reader.ReadByte();
+            PacketID messageType = (PacketID)reader.ReadByte();
             switch (messageType) {
-                case PacketType.SyncModdedNPCAI:
+                case PacketID.SyncModdedNPCAI:
                     if (Main.netMode == NetmodeID.MultiplayerClient) {
                         int npcIndex = reader.ReadInt32();
                         for (int i = 0; i < NPC.maxAI; i++) {
