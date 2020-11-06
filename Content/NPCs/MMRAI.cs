@@ -14,12 +14,12 @@ namespace MasterModeReloaded.Content.NPCs {
 
         /// <summary>
         /// What NPC type will have the designated AI changes. For example, if this value is NPCID.EyeOfCthulhu, any instance of an
-        /// Eye of Cthulhu will have the designated AI bools run.
+        /// Eye of Cthulhu will have the designated AI bools run. If -1, does not run on any NPC.
         /// </summary>
-        public readonly int npcAIType;
+        public virtual int NpcType => -1;
 
-        public MMRAI(int npcType) {
-            npcAIType = npcType;
+        public MMRAI(NPC npc) {
+            currentNPC = npc;
         }
 
         /// <summary>

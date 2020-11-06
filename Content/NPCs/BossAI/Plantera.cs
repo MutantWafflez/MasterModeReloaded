@@ -31,7 +31,9 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
         public const float NormalAIPhaseTwo = 3f;
         public const float ChargePhase = 4f;
 
-        public Plantera() : base(NPCID.Plantera) { }
+        public override int NpcType => NPCID.Plantera;
+
+        public Plantera(NPC npc) : base(npc) { }
 
         public override void PreVanillaAI(NPC npc) {
             //Phase 1 only

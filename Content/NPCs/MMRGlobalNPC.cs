@@ -3,6 +3,8 @@ using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using System.Reflection;
+using System;
 
 namespace MasterModeReloaded.Content.NPCs {
     public class MMRGlobalNPC : GlobalNPC {
@@ -27,10 +29,9 @@ namespace MasterModeReloaded.Content.NPCs {
         public override GlobalNPC NewInstance(NPC npc) {
             MMRGlobalNPC newNPC = (MMRGlobalNPC)base.NewInstance(npc);
 
-            MMRAI givenAI = MasterModeReloaded.ListOfMMRAI.FirstOrDefault(ai => ai.npcAIType == npc.type);
+            Type givenAI = MasterModeReloaded.ListOfMMRAI.FirstOrDefault(ai => ai.BaseType == typeof(MMRAI) && (int)ai.GetProperty("NpcType").GetMethod.Invoke(ai.GetConstructor(new Type[] { typeof(NPC) }).Invoke(new object[] { npc }), null) == npc.type);
             if (givenAI != null) {
-                newNPC.currentMMRAI = givenAI;
-                newNPC.currentMMRAI.currentNPC = npc;
+                newNPC.currentMMRAI = (MMRAI)givenAI.GetConstructor(new Type[] { typeof(NPC) }).Invoke(new object[] { npc });
             }
 
             return newNPC;

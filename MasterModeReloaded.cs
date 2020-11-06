@@ -14,7 +14,7 @@ namespace MasterModeReloaded {
 
         public const bool DebugMode = false;
 
-        public static List<MMRAI> ListOfMMRAI;
+        public static List<Type> ListOfMMRAI;
 
         #region Loading
         public override void Load() {
@@ -40,12 +40,7 @@ namespace MasterModeReloaded {
         }
 
         public override void PostSetupContent() {
-            ListOfMMRAI = new List<MMRAI>();
-
-            Type[] typesOfMMRAI = Assembly.GetExecutingAssembly().GetTypes().Where(m => m.IsSubclassOf(typeof(MMRAI))).ToArray();
-            foreach (Type mmrType in typesOfMMRAI) {
-                ListOfMMRAI.Add((MMRAI)mmrType.GetConstructor(Type.EmptyTypes).Invoke(null));
-            }
+            ListOfMMRAI = Assembly.GetExecutingAssembly().GetTypes().Where(m => m.IsSubclassOf(typeof(MMRAI))).ToList();
         }
         #endregion
 

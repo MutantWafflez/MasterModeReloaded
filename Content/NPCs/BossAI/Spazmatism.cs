@@ -35,7 +35,9 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
         public const float EncirclementPhase = 3f;
         public const float CircleAndFirePhase = 4f;
 
-        public Spazmatism() : base(NPCID.Spazmatism) { }
+        public override int NpcType => NPCID.Spazmatism;
+
+        public Spazmatism(NPC npc) : base(npc) { }
 
         private void RestartTwins(NPC npc, bool deleteProjectiles = true) {
             GeneralTimer = -360f;

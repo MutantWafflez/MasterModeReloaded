@@ -22,7 +22,9 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
             set => GetMMRGlobalNPC().moddedAI[2] = value;
         }
 
-        public Retinazer() : base(NPCID.Retinazer) { }
+        public override int NpcType => NPCID.Retinazer;
+
+        public Retinazer(NPC npc) : base(npc) { }
 
         public const float NormalAIPhase = 0f;
         public const float AlignToTargetPhase = 1f;

@@ -24,7 +24,9 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
             set => GetMMRGlobalNPC().moddedAI[1] = value.ToInt();
         }
 
-        public KingSlime() : base(NPCID.KingSlime) { }
+        public override int NpcType => NPCID.KingSlime;
+
+        public KingSlime(NPC npc) : base(npc) { }
 
         private void DoTeleport(NPC npc) {
             npc.ai[0] = 0f;
