@@ -1,3 +1,4 @@
+using MasterModeReloaded.Common;
 using MasterModeReloaded.Common.ID;
 using MasterModeReloaded.Content.NPCs;
 using System;
@@ -27,10 +28,8 @@ namespace MasterModeReloaded {
             }
             #endregion
 
-            #region Detours
-            //So the PreVanillaAI() method is called before the vanilla AI without touching PreAI()
-            On.Terraria.NPC.VanillaAI += NPC_VanillaAI;
-            #endregion
+            Patches.ApplyDetourPatches();
+            Patches.ApplyILPatches();
         }
 
         public override void Unload() {
@@ -61,16 +60,6 @@ namespace MasterModeReloaded {
                     Main.NewText($"Unexpected packet type recieved: {messageType}");
                     break;
             }
-        }
-        #endregion
-
-        #region Detour Methods
-        private void NPC_VanillaAI(On.Terraria.NPC.orig_VanillaAI orig, NPC self) {
-            MMRGlobalNPC globalNPC = self.GetGlobalNPC<MMRGlobalNPC>();
-            if (NPCLoader.PreAI(self) && Main.masterMode) {
-                globalNPC.currentMMRAI?.PreVanillaAI(self);
-            }
-            orig(self);
         }
         #endregion
     }

@@ -1,10 +1,9 @@
 ﻿using MasterModeReloaded.Common.ID;
+using System;
 using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System.Reflection;
-using System;
 
 namespace MasterModeReloaded.Content.NPCs {
     public class MMRGlobalNPC : GlobalNPC {
