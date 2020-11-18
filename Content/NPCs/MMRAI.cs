@@ -18,6 +18,11 @@ namespace MasterModeReloaded.Content.NPCs {
         /// </summary>
         public virtual int NpcType => -1;
 
+        /// <summary>
+        /// Whether or not this NPC will have their AI data printed to the chat for debug purposes. 
+        /// </summary>
+        public virtual bool DebugMode => false;
+
         public MMRAI(NPC npc) {
             currentNPC = npc;
         }

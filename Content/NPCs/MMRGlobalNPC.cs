@@ -60,9 +60,11 @@ namespace MasterModeReloaded.Content.NPCs {
                 packet.Write(npc.aiStyle);
                 packet.Send();
             }
-            if (MasterModeReloaded.DebugMode && !npc.friendly) {
-                Main.NewText($"{npc.TypeName}: {npc.ai[0]}, {npc.ai[1]}, {npc.ai[2]}, {npc.ai[3]}" +
-                    $"\n{moddedAI[0]}, {moddedAI[1]}, {moddedAI[2]}, {moddedAI[3]}");
+            if (currentMMRAI != null) {
+                if (currentMMRAI.DebugMode) {
+                    Main.NewText($"{npc.TypeName}: {npc.ai[0]}, {npc.ai[1]}, {npc.ai[2]}, {npc.ai[3]}" +
+                        $"\n{moddedAI[0]}, {moddedAI[1]}, {moddedAI[2]}, {moddedAI[3]}");
+                }
             }
             base.PostAI(npc);
         }

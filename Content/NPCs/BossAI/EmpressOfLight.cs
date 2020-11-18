@@ -6,15 +6,17 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
 
         public override int NpcType => NPCID.HallowBoss;
 
+        public override bool DebugMode => true;
+
         public EmpressOfLight(NPC npc) : base(npc) { }
 
         //NOTE: Anytime these comments refer to "Phase 1", they mean EOL's Vanilla Phase 2, since she spawns in her Vanilla Phase 2 in MMR
         //Any references to Phase 2 is MMR's new Phase 2 (effectively Vanilla Phase 3)
         public override void PreVanillaAI(NPC npc) {
 
-            //Continue wing animation in our custom Phases
+            //Continue wing animation in our custom Phases (about 25% faster, though)
             if (npc.aiStyle == -1) {
-                if ((npc.localAI[0] += 1.5f) >= 44f) {
+                if ((npc.localAI[0] += 1.25f) >= 44f) {
                     npc.localAI[0] = 0f;
                 }
             }
@@ -51,7 +53,6 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
                     npc.ai[0] = 0f;
                     npc.ai[1] = 0f;
                     npc.ai[2] = 0f;
-                    npc.aiStyle = -1;
                     npc.netUpdate = true;
                 }
             }
