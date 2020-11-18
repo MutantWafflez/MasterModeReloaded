@@ -1,12 +1,15 @@
 using MasterModeReloaded.Common;
 using MasterModeReloaded.Common.ID;
 using MasterModeReloaded.Content.NPCs;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using Terraria;
+using Terraria.Graphics.Effects;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -22,9 +25,9 @@ namespace MasterModeReloaded {
 
             #region Shaders
             if (Main.netMode != NetmodeID.Server) {
-                /*Ref<Effect> verticalRef = new Ref<Effect>((Effect)GetEffect("Effects/Filters/VerticalMirror"));
+                Ref<Effect> verticalRef = new Ref<Effect>(GetEffect("Assets/Shaders/Screen/VerticalMirror").Value);
                 Filters.Scene["VerticalMirror"] = new Filter(new ScreenShaderData(verticalRef, "VerticallyMirror"), EffectPriority.Medium);
-                Filters.Scene["VerticalMirror"].Load();*/
+                Filters.Scene["VerticalMirror"].Load();
             }
             #endregion
 

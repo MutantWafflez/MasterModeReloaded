@@ -1,4 +1,5 @@
 ﻿using Terraria.ModLoader;
+using Terraria.Graphics.Effects;
 
 namespace MasterModeReloaded.Common.Players {
     public class MMRPlayer : ModPlayer {
@@ -16,14 +17,14 @@ namespace MasterModeReloaded.Common.Players {
 
         #region Buff Related
         public override void PostUpdateBuffs() {
-            /*if (trueConfusion)
+            if (trueConfusion)
             {
                 Filters.Scene.Activate("VerticalMirror");
             }
             else
             {
                 Filters.Scene.Deactivate("VerticalMirror");
-            }*/
+            }
         }
         #endregion
     }
