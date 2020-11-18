@@ -1,5 +1,4 @@
 displayName = Master Mode Reloaded
 author = MutantWafflez
 version = 0.1
-hideCode = true
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*

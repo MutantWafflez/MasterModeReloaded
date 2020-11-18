@@ -1,6 +1,8 @@
 ﻿using MasterModeReloaded.Content.NPCs;
 using Microsoft.Xna.Framework;
 using MonoMod.Cil;
+using System;
+using System.Linq;
 using System.Reflection;
 using Terraria;
 using Terraria.ModLoader;
@@ -12,33 +14,59 @@ namespace MasterModeReloaded.Common {
     public static class Patches {
 
         public static void ApplyDetourPatches() {
-            //So the PreVanillaAI() method is called before the vanilla AI without touching PreAI()
-            On.Terraria.NPC.VanillaAI += NPC_VanillaAI;
-
             //So Vanilla interprets the EOL as in her Vanilla Phase 2 in MMR's Phase 2/3
             On.Terraria.NPC.AI_120_HallowBoss_IsInPhase2 += NPC_AI_120_HallowBoss_IsInPhase2;
         }
 
         public static void ApplyILPatches() {
+            //So the PreVanillaAI() method is called before the vanilla AI without touching PreAI()
+            IL.Terraria.NPC.VanillaAI += NPC_VanillaAI;
+
             //EOL MMR Phase 2 visuals
             IL.Terraria.Main.DrawNPCDirect_HallowBoss += Main_DrawNPCDirect_HallowBoss;
+
+            //Add eclipse in MMR ModMenu
+            IL.Terraria.Main.DrawMenu += Main_DrawMenu;
         }
 
         #region Detour Methods
-        private static void NPC_VanillaAI(On.Terraria.NPC.orig_VanillaAI orig, NPC self) {
-            MMRGlobalNPC globalNPC = self.GetGlobalNPC<MMRGlobalNPC>();
-            if (NPCLoader.PreAI(self) && Main.masterMode) {
-                globalNPC.currentMMRAI?.PreVanillaAI(self);
-            }
-            orig(self);
-        }
-
         private static bool NPC_AI_120_HallowBoss_IsInPhase2(On.Terraria.NPC.orig_AI_120_HallowBoss_IsInPhase2 orig, NPC self) {
             return self.ai[3] == 1f || self.ai[3] == 3f || self.ai[3] >= 4f;
         }
         #endregion
 
         #region IL Methods
+        private static void NPC_VanillaAI(ILContext il) {
+            ILCursor c = new ILCursor(il);
+
+            //Go to beginning of method (if for some reason we weren't there already)
+            c.Goto(0);
+
+            ILLabel falseLabel = c.DefineLabel();
+
+            c.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_0);
+            c.Emit(Mono.Cecil.Cil.OpCodes.Call, typeof(NPC).GetMethod(nameof(NPC.GetGlobalNPC), new Type[] { }).MakeGenericMethod(typeof(MMRGlobalNPC)));
+            c.Emit(Mono.Cecil.Cil.OpCodes.Stloc_0);
+
+            c.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<NPC, bool>>(npc => npc.GetGlobalNPC<MMRGlobalNPC>().currentMMRAI != null && NPCLoader.PreAI(npc) && Main.masterMode);
+            c.Emit(Mono.Cecil.Cil.OpCodes.Brfalse_S, falseLabel);
+
+            c.Emit(Mono.Cecil.Cil.OpCodes.Ldloc_0);
+            c.Emit(Mono.Cecil.Cil.OpCodes.Ldfld, typeof(MMRGlobalNPC).GetField(nameof(MMRGlobalNPC.currentMMRAI), BindingFlags.Public | BindingFlags.Instance));
+            c.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_0);
+            c.Emit(Mono.Cecil.Cil.OpCodes.Callvirt, typeof(MMRAI).GetMethod(nameof(MMRAI.PreVanillaAI), BindingFlags.Public | BindingFlags.Instance));
+
+            c.MarkLabel(falseLabel);
+
+            /* ^This is what this IL is translated to (with "this" referring to the given NPC instance):
+             MMRGlobalNPC globalNPC = this.GetGlobalNPC<MMRGlobalNPC>();
+             if (globalNPC.currentMMRAI != null && NPCLoader.PreAI(this) && Main.masterMode) {
+                globalNPC.currentMMRAI.PreVanillaAI(this);
+             }
+             */
+        }
+
         private static void Main_DrawNPCDirect_HallowBoss(ILContext il) {
             ILCursor c = new ILCursor(il);
 
@@ -80,7 +108,6 @@ namespace MasterModeReloaded.Common {
 
                 c.MarkLabel(label);
             }
-
             /* ^This is what this IL is translated to:
              if (rCurrentNPC.ai[3] >= 4f) {
                 color3 = Color.Red;
@@ -89,7 +116,31 @@ namespace MasterModeReloaded.Common {
                 color3 *= num4 * rCurrentNPC.Opacity;
              }
              */
-            #endregion
         }
+
+        private static void Main_DrawMenu(ILContext il) {
+            ILCursor c = new ILCursor(il);
+
+            c.Goto(c.Body.Instructions.Last());
+
+            ILLabel lastInstructionLabel = c.DefineLabel();
+
+            c.EmitDelegate<Func<bool>>(() => {
+                return MenuLoader.CurrentMenu.DisplayName == MMRModMenu.PublicDisplayName;
+            });
+            c.Emit(Mono.Cecil.Cil.OpCodes.Brfalse_S, lastInstructionLabel);
+
+            c.Emit(Mono.Cecil.Cil.OpCodes.Ldc_I4_1);
+            c.Emit(Mono.Cecil.Cil.OpCodes.Stsfld, typeof(Main).GetField(nameof(Main.eclipse), BindingFlags.Public | BindingFlags.Static));
+
+            c.MarkLabel(lastInstructionLabel);
+
+            /* ^This IL simply translates to:
+               if (MenuLoader.CurrentMenu.DisplayName == MMRModMenu.PublicDisplayName) {
+                   Main.eclipse = true;
+               }
+            */
+        }
+        #endregion
     }
 }
