@@ -39,6 +39,11 @@ namespace MasterModeReloaded {
             #region Static Resets
             ListOfMMRAI = null;
             #endregion
+
+            #region Patches Unloads
+            Patches.UnloadDetourPatches();
+            Patches.UnloadILPatches();
+            #endregion
         }
 
         public override void PostSetupContent() {

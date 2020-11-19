@@ -29,6 +29,18 @@ namespace MasterModeReloaded.Common {
             IL.Terraria.Main.DrawMenu += Main_DrawMenu;
         }
 
+        public static void UnloadDetourPatches() {
+            On.Terraria.NPC.AI_120_HallowBoss_IsInPhase2 -= NPC_AI_120_HallowBoss_IsInPhase2;
+        }
+
+        public static void UnloadILPatches() {
+            IL.Terraria.NPC.VanillaAI -= NPC_VanillaAI;
+
+            IL.Terraria.Main.DrawNPCDirect_HallowBoss -= Main_DrawNPCDirect_HallowBoss;
+
+            IL.Terraria.Main.DrawMenu -= Main_DrawMenu;
+        }
+
         #region Detour Methods
         private static bool NPC_AI_120_HallowBoss_IsInPhase2(On.Terraria.NPC.orig_AI_120_HallowBoss_IsInPhase2 orig, NPC self) {
             return self.ai[3] == 1f || self.ai[3] == 3f || self.ai[3] >= 4f;
