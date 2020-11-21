@@ -1,8 +1,16 @@
 ﻿using Terraria;
 using Terraria.ID;
+using Microsoft.Xna.Framework;
+using Terraria.Audio;
+using System.Reflection;
+using Terraria.GameContent;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.ModLoader;
 
 namespace MasterModeReloaded.Content.NPCs.BossAI {
     public class EmpressOfLight : MMRAI {
+
+        public MethodInfo DrawNPCDirectMethod = typeof(Main).GetMethod(nameof(Main.DrawNPCDirect), BindingFlags.Public | BindingFlags.Instance);
 
         public override int NpcType => NPCID.HallowBoss;
 
@@ -49,11 +57,37 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
             //Phase 2
             else if (npc.ai[3] == 4f) {
                 //Exit out of transition phase
-                if (npc.ai[0] == 10f && npc.ai[1] >= 180) {
+                if (npc.ai[0] == 10f && npc.ai[1] >= 180f) {
                     npc.ai[0] = 0f;
                     npc.ai[1] = 0f;
                     npc.ai[2] = 0f;
                     npc.netUpdate = true;
+                }
+                //Prepare for triangulate attack (create two clones then form a triangle between the three)
+                if (npc.ai[0] == 0f && npc.ai[1] <= 90f) {
+                    npc.ai[1]++;
+                    if ((npc.alpha += 5) > 255) {
+                        npc.alpha = 255;
+                    }
+                    npc.velocity *= 0.99f;
+                }
+                //Transition to triangulate attack
+                else if (npc.ai[0] == 0f && npc.ai[1] > 90f) {
+                    npc.ai[0] = 1f;
+                    npc.ai[1] = 0f;
+                    npc.velocity *= 0f;
+                    npc.TargetClosest();
+                    npc.Teleport(Main.player[npc.target].position - new Vector2(0, 16 * 20), -1);
+                    SoundEngine.PlaySound(SoundID.Item160, npc.Center);
+                    npc.netUpdate = true;
+                }
+                //Reppearance phase for triangulation attack
+                else if (npc.ai[0] == 1f && npc.ai[1] <= 90f) {
+                    npc.ai[1]++;
+                    if ((npc.alpha -= 5) < 0) {
+                        npc.alpha = 0;
+                    }
+
                 }
             }
             //Last Stand (Phase 3)
@@ -63,10 +97,25 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
         }
 
         public override void AI(NPC npc) {
+            if (npc.ai[3] == 4f && (npc.ai[0] == 1f || npc.ai[0] == 2f)) {
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+                NPC leftNPC = new NPC();
+                leftNPC.CloneDefaults(npc.type);
+                leftNPC.ai = (float[])npc.ai.Clone();
+                leftNPC.position += new Vector2(-16 * 20, -16 * 40);
+                leftNPC.alpha = npc.alpha;
+                NPC rightNPC = new NPC();
+                rightNPC.CloneDefaults(npc.type);
+                rightNPC.ai = (float[])npc.ai.Clone();
+                rightNPC.position += new Vector2(16 * 20, -16 * 40);
+                rightNPC.alpha = npc.alpha;
+                DrawNPCDirectMethod.Invoke(Main.instance, new object[] { Main.spriteBatch, leftNPC, false, Main.screenPosition });
+                DrawNPCDirectMethod.Invoke(Main.instance, new object[] { Main.spriteBatch, rightNPC, false, Main.screenPosition });
+                Main.spriteBatch.End();
+            }
         }
 
         public override void PostAI(NPC npc) {
-
         }
     }
 }
