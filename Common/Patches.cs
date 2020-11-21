@@ -1,5 +1,4 @@
-﻿using MasterModeReloaded.Content.NPCs;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using MonoMod.Cil;
 using System;
 using System.Linq;

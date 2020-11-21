@@ -1,11 +1,9 @@
-﻿using Terraria;
-using Terraria.ID;
-using Microsoft.Xna.Framework;
-using Terraria.Audio;
-using System.Reflection;
-using Terraria.GameContent;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.ModLoader;
+using System.Reflection;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
 
 namespace MasterModeReloaded.Content.NPCs.BossAI {
     public class EmpressOfLight : MMRAI {
