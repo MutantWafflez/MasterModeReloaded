@@ -17,12 +17,12 @@ namespace MasterModeReloaded.Content.Items.Dev {
         }
 
         public override void SetDefaults() {
-            item.vanity = true;
-            item.value = Item.sellPrice(gold: 1);
-            item.wornArmor = true;
-            item.width = 20;
-            item.height = 10;
-            item.rare = ItemRarityID.Cyan;
+            Item.vanity = true;
+            Item.value = Item.sellPrice(gold: 1);
+            Item.wornArmor = true;
+            Item.width = 20;
+            Item.height = 10;
+            Item.rare = ItemRarityID.Cyan;
         }
 
         public override bool IsArmorSet(Item head, Item body, Item legs) => body.type == ModContent.ItemType<MutantDevChestplate>() && legs.type == ModContent.ItemType<MutantDevPants>();
@@ -43,12 +43,12 @@ namespace MasterModeReloaded.Content.Items.Dev {
         }
 
         public override void SetDefaults() {
-            item.vanity = true;
-            item.value = Item.sellPrice(gold: 1);
-            item.wornArmor = true;
-            item.width = 30;
-            item.height = 22;
-            item.rare = ItemRarityID.Cyan;
+            Item.vanity = true;
+            Item.value = Item.sellPrice(gold: 1);
+            Item.wornArmor = true;
+            Item.width = 30;
+            Item.height = 22;
+            Item.rare = ItemRarityID.Cyan;
         }
 
         public override void DrawHands(ref bool drawHands, ref bool drawArms) {
@@ -67,12 +67,12 @@ namespace MasterModeReloaded.Content.Items.Dev {
         }
 
         public override void SetDefaults() {
-            item.vanity = true;
-            item.value = Item.sellPrice(gold: 1);
-            item.wornArmor = true;
-            item.width = 22;
-            item.height = 18;
-            item.rare = ItemRarityID.Cyan;
+            Item.vanity = true;
+            Item.value = Item.sellPrice(gold: 1);
+            Item.wornArmor = true;
+            Item.width = 22;
+            Item.height = 18;
+            Item.rare = ItemRarityID.Cyan;
         }
     }
 }

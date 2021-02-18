@@ -7,7 +7,17 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace MasterModeReloaded.Content.NPCs.BossAI {
+
     public class Spazmatism : MMRAI {
+        public const float NormalAIPhase = 0f;
+
+        public const float EncirclementWarningPhase = 1f;
+
+        public const float EncirclementPreparationPhase = 2f;
+
+        public const float EncirclementPhase = 3f;
+
+        public const float CircleAndFirePhase = 4f;
 
         public float GeneralTimer {
             get => GetMMRGlobalNPC().moddedAI[0];
@@ -29,52 +39,11 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
             set => GetMMRGlobalNPC().moddedAI[3] = value;
         }
 
-        public const float NormalAIPhase = 0f;
-        public const float EncirclementWarningPhase = 1f;
-        public const float EncirclementPreparationPhase = 2f;
-        public const float EncirclementPhase = 3f;
-        public const float CircleAndFirePhase = 4f;
-
         public override int NpcType => NPCID.Spazmatism;
 
         public Spazmatism(NPC npc) : base(npc) { }
 
-        private void RestartTwins(NPC npc, bool deleteProjectiles = true) {
-            GeneralTimer = -360f;
-            CirclePhase = NormalAIPhase;
-            CenterOfCircleX = 0f;
-            CenterOfCircleY = 0f;
-
-            SoundEngine.PlaySound(SoundID.ForceRoar, npc.Center, -1);
-            npc.ai[1] = 0f;
-            npc.ai[2] = 0f;
-            npc.ai[3] = 0f;
-            if (Main.netMode != NetmodeID.MultiplayerClient && deleteProjectiles) {
-                for (int i = 0; i < Main.maxProjectiles; i++) {
-                    if (Main.projectile[i].type == ModContent.ProjectileType<SmartCursedFlames>()) {
-                        Main.projectile[i].Kill();
-                        NetMessage.SendData(MessageID.KillProjectile, number: i);
-                    }
-                }
-            }
-
-            if (Main.netMode != NetmodeID.MultiplayerClient) {
-                int retIndex = NPC.FindFirstNPC(NPCID.Retinazer);
-                if (retIndex != -1) {
-                    Retinazer retAI = (Retinazer)Main.npc[retIndex].GetGlobalNPC<MMRGlobalNPC>().currentMMRAI;
-                    retAI.GeneralTimer = 0;
-                    retAI.BarragePhase = Retinazer.NormalAIPhase;
-                    Main.npc[retIndex].ai[1] = 0f;
-                    NetMessage.SendData(MessageID.SyncNPC, number: retIndex);
-                    Main.npc[retIndex].netUpdate = true;
-                }
-            }
-
-            npc.netUpdate = true;
-        }
-
         public override void PreVanillaAI(NPC npc) {
-
             Player target = Main.player[npc.target];
 
             //Will enter second phase at 60% health instead of 40%
@@ -97,7 +66,6 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
 
             //Second Phase Only
             if (npc.ai[0] == 3f) {
-
                 //Whether or not spaz is in his "third phase" (just essentially do stuff at a faster rate such as encircle)
                 bool isPseudoThirdPhase = npc.life < npc.lifeMax * 0.25f;
 
@@ -154,7 +122,7 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
                 //Gives visual and audio cue for the encirclement about to occur while Spazmatism disappears
                 else if (CirclePhase == EncirclementWarningPhase) {
                     //Dust as a visual indicator
-                    int cursedDust = Dust.NewDust(new Vector2(npc.position.X + npc.velocity.X, npc.position.Y + npc.velocity.Y), npc.width, npc.height, DustID.CursedTorch, npc.velocity.X, npc.velocity.Y, 100, default(Color), 3f * npc.scale);
+                    int cursedDust = Dust.NewDust(new Vector2(npc.position.X + npc.velocity.X, npc.position.Y + npc.velocity.Y), npc.width, npc.height, DustID.CursedTorch, npc.velocity.X, npc.velocity.Y, 100, default, 3f * npc.scale);
                     Main.dust[cursedDust].noGravity = true;
 
                     npc.alpha += 3;
@@ -212,7 +180,6 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
 
                         npc.netUpdate = true;
                     }
-
                 }
                 //Spazmatism rapidly begins encircling the target, creating a ring of cursed flames
                 else if (CirclePhase == EncirclementPhase) {
@@ -224,8 +191,8 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
 
                     if (Main.netMode != NetmodeID.MultiplayerClient && ++npc.ai[2] % 3 == 0f) {
                         int cursedFlames = Projectile.NewProjectile(npc.Center, Vector2.Zero, ModContent.ProjectileType<SmartCursedFlames>(), npc.GetAttackDamage_ForProjectiles(30f, 27f), 0);
-                        (Main.projectile[cursedFlames].modProjectile as SmartCursedFlames).TargetPosition = new Vector2(CenterOfCircleX, CenterOfCircleY);
-                        (Main.projectile[cursedFlames].modProjectile as SmartCursedFlames).OriginalPosition = npc.Center;
+                        (Main.projectile[cursedFlames].ModProjectile as SmartCursedFlames).TargetPosition = new Vector2(CenterOfCircleX, CenterOfCircleY);
+                        (Main.projectile[cursedFlames].ModProjectile as SmartCursedFlames).OriginalPosition = npc.Center;
                     }
 
                     if (GeneralTimer >= MathHelper.TwoPi) {
@@ -260,7 +227,6 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
                         RestartTwins(npc);
                     }
                 }
-
             }
         }
 
@@ -283,6 +249,40 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
         }
 
         public override void PostAI(NPC npc) {
+        }
+
+        private void RestartTwins(NPC npc, bool deleteProjectiles = true) {
+            GeneralTimer = -360f;
+            CirclePhase = NormalAIPhase;
+            CenterOfCircleX = 0f;
+            CenterOfCircleY = 0f;
+
+            SoundEngine.PlaySound(SoundID.ForceRoar, npc.Center, -1);
+            npc.ai[1] = 0f;
+            npc.ai[2] = 0f;
+            npc.ai[3] = 0f;
+            if (Main.netMode != NetmodeID.MultiplayerClient && deleteProjectiles) {
+                for (int i = 0; i < Main.maxProjectiles; i++) {
+                    if (Main.projectile[i].type == ModContent.ProjectileType<SmartCursedFlames>()) {
+                        Main.projectile[i].Kill();
+                        NetMessage.SendData(MessageID.KillProjectile, number: i);
+                    }
+                }
+            }
+
+            if (Main.netMode != NetmodeID.MultiplayerClient) {
+                int retIndex = NPC.FindFirstNPC(NPCID.Retinazer);
+                if (retIndex != -1) {
+                    Retinazer retAI = (Retinazer)Main.npc[retIndex].GetGlobalNPC<MMRGlobalNPC>().currentMMRAI;
+                    retAI.GeneralTimer = 0;
+                    retAI.BarragePhase = Retinazer.NormalAIPhase;
+                    Main.npc[retIndex].ai[1] = 0f;
+                    NetMessage.SendData(MessageID.SyncNPC, number: retIndex);
+                    Main.npc[retIndex].netUpdate = true;
+                }
+            }
+
+            npc.netUpdate = true;
         }
     }
 }

@@ -7,7 +7,17 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace MasterModeReloaded.Content.NPCs.BossAI {
+
     public class Plantera : MMRAI {
+        public const float NormalAIPhase = 0f;
+
+        public const float NettleBurstWarningPhase = 1f;
+
+        public const float NettleBurstPhase = 2f;
+
+        public const float NormalAIPhaseTwo = 3f;
+
+        public const float ChargePhase = 4f;
 
         public float GeneralTimer {
             get => GetMMRGlobalNPC().moddedAI[0];
@@ -23,13 +33,6 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
             get => GetMMRGlobalNPC().moddedAI[2];
             set => GetMMRGlobalNPC().moddedAI[2] = value;
         }
-
-        public const float NormalAIPhase = 0f;
-        public const float NettleBurstWarningPhase = 1f;
-        public const float NettleBurstPhase = 2f;
-
-        public const float NormalAIPhaseTwo = 3f;
-        public const float ChargePhase = 4f;
 
         public override int NpcType => NPCID.Plantera;
 
@@ -64,9 +67,9 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
                     if (GeneralTimer == 0f) {
                         if (Main.netMode != NetmodeID.MultiplayerClient) {
                             for (int direction = 0; direction < 4; direction++) {
-                                HostileNettleBurst nettleBurst = (HostileNettleBurst)Projectile.NewProjectileDirect(npc.Center, Vector2.Zero, ModContent.ProjectileType<HostileNettleBurst>(), 30, 1f).modProjectile;
-                                nettleBurst.psuedoVelocity = new Vector2(0, -nettleBurst.projectile.height).RotatedBy(MathHelper.ToRadians(90) * direction);
-                                NetMessage.SendData(MessageID.SyncProjectile, number: nettleBurst.projectile.whoAmI);
+                                HostileNettleBurst nettleBurst = (HostileNettleBurst)Projectile.NewProjectileDirect(npc.Center, Vector2.Zero, ModContent.ProjectileType<HostileNettleBurst>(), 30, 1f).ModProjectile;
+                                nettleBurst.psuedoVelocity = new Vector2(0, -nettleBurst.Projectile.height).RotatedBy(MathHelper.ToRadians(90) * direction);
+                                NetMessage.SendData(MessageID.SyncProjectile, number: nettleBurst.Projectile.whoAmI);
                             }
 
                             SoundEngine.PlaySound(SoundID.ForceRoar, npc.Center, -1);
@@ -83,7 +86,6 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
             }
             //Phase 2 only
             else {
-
                 //Total amount of sequential charges Plantera will do in the Charge Phase
                 int totalCharges = 2;
                 if (npc.GetLifePercent() <= 0.25f) {
@@ -116,7 +118,6 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
                 }
                 //Plantera will charge up to 4 times (depending on remaining life) towards the player
                 else if (CurrentSubPhase == ChargePhase) {
-
                     //Time (in seconds) of how long each charge lasts
                     float chargeLength = MathHelper.Clamp(npc.GetLifePercent() + 0.5f, 0.45f, 0.8f);
 
@@ -157,7 +158,5 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
 
         public override void PostAI(NPC npc) {
         }
-
-
     }
 }

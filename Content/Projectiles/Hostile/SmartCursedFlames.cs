@@ -5,48 +5,46 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace MasterModeReloaded.Content.Projectiles.Hostile {
-    public class SmartCursedFlames : ModProjectile {
 
+    public class SmartCursedFlames : ModProjectile {
         public Vector2 OriginalPosition;
         public Vector2 TargetPosition;
 
         private bool hasBurst = false;
 
-        public override string Texture => "Terraria/Projectile_" + ProjectileID.CursedFlameHostile;
-
         public override void SetDefaults() {
-            projectile.width = 16;
-            projectile.height = 16;
-            projectile.aiStyle = -1;
-            projectile.timeLeft = 60 * 30;
-            projectile.hostile = true;
-            projectile.light = 0.8f;
-            projectile.alpha = 100;
-            projectile.DamageType = DamageClass.Magic;
-            projectile.penetrate = -1;
-            projectile.scale = 1.3f;
-            projectile.tileCollide = false;
+            Projectile.width = 16;
+            Projectile.height = 16;
+            Projectile.aiStyle = -1;
+            Projectile.timeLeft = 60 * 30;
+            Projectile.hostile = true;
+            Projectile.light = 0.8f;
+            Projectile.alpha = 100;
+            Projectile.DamageType = DamageClass.Magic;
+            Projectile.penetrate = -1;
+            Projectile.scale = 1.3f;
+            Projectile.tileCollide = false;
         }
 
         public override void AI() {
-            if (++projectile.localAI[0] % 4 == 0) {
-                int cursedDust = Dust.NewDust(new Vector2(projectile.position.X + projectile.velocity.X, projectile.position.Y + projectile.velocity.Y), projectile.width, projectile.height, 75, projectile.velocity.X, projectile.velocity.Y, 100, default, 3f * projectile.scale);
+            if (++Projectile.localAI[0] % 4 == 0) {
+                int cursedDust = Dust.NewDust(new Vector2(Projectile.position.X + Projectile.velocity.X, Projectile.position.Y + Projectile.velocity.Y), Projectile.width, Projectile.height, 75, Projectile.velocity.X, Projectile.velocity.Y, 100, default, 3f * Projectile.scale);
                 Main.dust[cursedDust].noGravity = true;
-                projectile.localAI[0] = 0f;
+                Projectile.localAI[0] = 0f;
             }
 
-            if (projectile.ai[0] == 1f) {
-                if (++projectile.ai[1] <= 120) {
-                    projectile.velocity = projectile.DirectionTo(TargetPosition) * 12f;
+            if (Projectile.ai[0] == 1f) {
+                if (++Projectile.ai[1] <= 120) {
+                    Projectile.velocity = Projectile.DirectionTo(TargetPosition) * 12f;
                 }
-                else if (projectile.ai[1] > 120 && !hasBurst) {
-                    projectile.velocity = projectile.DirectionTo(OriginalPosition) * 12f;
+                else if (Projectile.ai[1] > 120 && !hasBurst) {
+                    Projectile.velocity = Projectile.DirectionTo(OriginalPosition) * 12f;
                     hasBurst = true;
-                    projectile.netUpdate = true;
+                    Projectile.netUpdate = true;
                 }
             }
 
-            projectile.rotation += MathHelper.ToRadians(2.5f);
+            Projectile.rotation += MathHelper.ToRadians(2.5f);
         }
 
         public override void SendExtraAI(BinaryWriter writer) {

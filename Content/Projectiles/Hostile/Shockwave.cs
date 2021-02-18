@@ -2,6 +2,7 @@
 using Terraria.ModLoader;
 
 namespace MasterModeReloaded.Content.Projectiles.Hostile {
+
     public class Shockwave : ModProjectile {
 
         public override void SetStaticDefaults() {
@@ -9,19 +10,18 @@ namespace MasterModeReloaded.Content.Projectiles.Hostile {
         }
 
         public override void SetDefaults() {
-            projectile.hostile = true;
-            projectile.width = 288;
-            projectile.height = 48;
-            projectile.ignoreWater = true;
-            projectile.knockBack = 3f;
-            projectile.tileCollide = false;
-            projectile.timeLeft = 60;
-            projectile.maxPenetrate = 999;
-            projectile.penetrate = 999;
-            projectile.velocity = new Vector2(0, 0);
-            projectile.aiStyle = -1;
-            projectile.alpha = 255;
+            Projectile.hostile = true;
+            Projectile.width = 288;
+            Projectile.height = 48;
+            Projectile.ignoreWater = true;
+            Projectile.knockBack = 3f;
+            Projectile.tileCollide = false;
+            Projectile.timeLeft = 60;
+            Projectile.maxPenetrate = 999;
+            Projectile.penetrate = 999;
+            Projectile.velocity = new Vector2(0, 0);
+            Projectile.aiStyle = -1;
+            Projectile.alpha = 255;
         }
     }
-
 }

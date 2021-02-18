@@ -2,7 +2,9 @@
 using Terraria.ModLoader;
 
 namespace MasterModeReloaded.Content.Commands {
+
     public class ItemCommand : ModCommand {
+
         public override CommandType Type
             => CommandType.World;
 

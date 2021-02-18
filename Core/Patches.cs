@@ -1,12 +1,15 @@
-﻿using Microsoft.Xna.Framework;
-using MonoMod.Cil;
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
+using MasterModeReloaded.Common;
+using MasterModeReloaded.Common.ModMenus;
+using Microsoft.Xna.Framework;
+using MonoMod.Cil;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace MasterModeReloaded.Common {
+namespace MasterModeReloaded.Core {
+
     /// <summary>
     /// Class that holds all the Detours and IL Edits of MMR.
     /// </summary>
@@ -46,6 +49,7 @@ namespace MasterModeReloaded.Common {
         }
 
         #region Detour Methods
+
         private static void NPC_VanillaAI(On.Terraria.NPC.orig_VanillaAI orig, NPC self) {
             if (self.GetMMRGlobalNPC().currentMMRAI != null && NPCLoader.PreAI(self) && Main.masterMode) {
                 self.GetMMRGlobalNPC().currentMMRAI.PreVanillaAI(self);
@@ -56,9 +60,11 @@ namespace MasterModeReloaded.Common {
         private static bool NPC_AI_120_HallowBoss_IsInPhase2(On.Terraria.NPC.orig_AI_120_HallowBoss_IsInPhase2 orig, NPC self) {
             return self.ai[3] == 1f || self.ai[3] == 3f || self.ai[3] >= 4f;
         }
+
         #endregion
 
         #region IL Methods
+
         /* Removed until I can figure out what in God's name is wrong with this IL upon reloading
         private static void NPC_VanillaAI(ILContext il) {
             ILCursor c = new ILCursor(il);
@@ -84,6 +90,7 @@ namespace MasterModeReloaded.Common {
              *
         }
         */
+
         private static void Main_DrawNPCDirect_HallowBoss(ILContext il) {
             ILCursor c = new ILCursor(il);
 
@@ -158,6 +165,7 @@ namespace MasterModeReloaded.Common {
                }
             */
         }
+
         #endregion
     }
 }

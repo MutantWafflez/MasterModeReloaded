@@ -6,8 +6,8 @@ using Terraria.Audio;
 using Terraria.ID;
 
 namespace MasterModeReloaded.Content.NPCs.BossAI {
-    public class EmpressOfLight : MMRAI {
 
+    public class EmpressOfLight : MMRAI {
         public MethodInfo DrawNPCDirectMethod = typeof(Main).GetMethod(nameof(Main.DrawNPCDirect), BindingFlags.Public | BindingFlags.Instance);
 
         public override int NpcType => NPCID.HallowBoss;
@@ -19,7 +19,6 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
         //NOTE: Anytime these comments refer to "Phase 1", they mean EOL's Vanilla Phase 2, since she spawns in her Vanilla Phase 2 in MMR
         //Any references to Phase 2 is MMR's new Phase 2 (effectively Vanilla Phase 3)
         public override void PreVanillaAI(NPC npc) {
-
             //Continue wing animation in our custom Phases (about 25% faster, though)
             if (npc.aiStyle == -1) {
                 if ((npc.localAI[0] += 1.25f) >= 44f) {
@@ -85,18 +84,16 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
                     if ((npc.alpha -= 5) < 0) {
                         npc.alpha = 0;
                     }
-
                 }
             }
             //Last Stand (Phase 3)
             else if (npc.ai[3] == 5f) {
-
             }
         }
 
         public override void AI(NPC npc) {
             if (npc.ai[3] == 4f && (npc.ai[0] == 1f || npc.ai[0] == 2f)) {
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null);
                 NPC leftNPC = new NPC();
                 leftNPC.CloneDefaults(npc.type);
                 leftNPC.ai = (float[])npc.ai.Clone();

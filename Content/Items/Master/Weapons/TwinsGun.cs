@@ -1,5 +1,4 @@
 ﻿using MasterModeReloaded.Content.Projectiles.Friendly;
-using MasterModeReloaded.Content.Rarities;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +9,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace MasterModeReloaded.Content.Items.Master.Weapons {
+
     public class TwinsGun : ModItem {
 
         //TODO: Glowmask
@@ -21,20 +21,20 @@ namespace MasterModeReloaded.Content.Items.Master.Weapons {
         }
 
         public override void SetDefaults() {
-            item.width = 72;
-            item.height = 28;
-            item.useStyle = ItemUseStyleID.Shoot;
-            item.shoot = ProjectileID.PurpleLaser;
-            item.DamageType = DamageClass.Ranged;
-            item.autoReuse = true;
-            item.shootSpeed = 7f;
-            item.useAnimation = 16;
-            item.useTime = 16;
-            item.rare = ModContent.RarityType<PsuedoMasterRarity>();
-            item.value = Item.sellPrice(gold: 3);
-            item.damage = 55;
-            item.knockBack = 1.5f;
-            item.UseSound = SoundID.Item157;
+            Item.width = 72;
+            Item.height = 28;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.shoot = ProjectileID.PurpleLaser;
+            Item.DamageType = DamageClass.Ranged;
+            Item.autoReuse = true;
+            Item.shootSpeed = 7f;
+            Item.useAnimation = 16;
+            Item.useTime = 16;
+            Item.master = true;
+            Item.value = Item.sellPrice(gold: 3);
+            Item.damage = 55;
+            Item.knockBack = 1.5f;
+            Item.UseSound = SoundID.Item157;
         }
 
         public override Vector2? HoldoutOffset() {
