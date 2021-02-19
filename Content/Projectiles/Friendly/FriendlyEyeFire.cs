@@ -5,7 +5,6 @@ using Terraria.ModLoader;
 namespace MasterModeReloaded.Content.Projectiles.Friendly {
 
     public class FriendlyEyeFire : ModProjectile {
-        public override string Texture => "Terraria/Projectile_" + ProjectileID.EyeFire;
 
         public override void SetDefaults() {
             Projectile.CloneDefaults(ProjectileID.EyeFire);
