@@ -8,11 +8,9 @@ using Terraria.ID;
 namespace MasterModeReloaded.Content.NPCs.BossAI {
 
     public class EmpressOfLight : MMRAI {
-        public MethodInfo DrawNPCDirectMethod = typeof(Main).GetMethod(nameof(Main.DrawNPCDirect), BindingFlags.Public | BindingFlags.Instance);
-
         public override int NpcType => NPCID.HallowBoss;
 
-        public override bool DebugMode => true;
+        public override bool DebugMode => false;
 
         public EmpressOfLight(NPC npc) : base(npc) { }
 
@@ -94,18 +92,7 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
         public override void AI(NPC npc) {
             if (npc.ai[3] == 4f && (npc.ai[0] == 1f || npc.ai[0] == 2f)) {
                 Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null);
-                NPC leftNPC = new NPC();
-                leftNPC.CloneDefaults(npc.type);
-                leftNPC.ai = (float[])npc.ai.Clone();
-                leftNPC.position += new Vector2(-16 * 20, -16 * 40);
-                leftNPC.alpha = npc.alpha;
-                NPC rightNPC = new NPC();
-                rightNPC.CloneDefaults(npc.type);
-                rightNPC.ai = (float[])npc.ai.Clone();
-                rightNPC.position += new Vector2(16 * 20, -16 * 40);
-                rightNPC.alpha = npc.alpha;
-                DrawNPCDirectMethod.Invoke(Main.instance, new object[] { Main.spriteBatch, leftNPC, false, Main.screenPosition });
-                DrawNPCDirectMethod.Invoke(Main.instance, new object[] { Main.spriteBatch, rightNPC, false, Main.screenPosition });
+
                 Main.spriteBatch.End();
             }
         }
