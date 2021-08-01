@@ -3,6 +3,7 @@ using MasterModeReloaded.Content.Projectiles.Hostile;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -11,29 +12,21 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
     public class KingSlime : MMRAI {
 
         public float SlamTimer {
-            get => GetMMRGlobalNPC().moddedAI[0];
-            set => GetMMRGlobalNPC().moddedAI[0] = value;
+            get => globalNPC.moddedAI[0];
+            set => globalNPC.moddedAI[0] = value;
         }
 
         public bool IsSlamming {
-            get
-            {
-                if (GetMMRGlobalNPC().moddedAI[1] == 1f) { return true; }
+            get {
+                if (globalNPC.moddedAI[1] == 1f) { return true; }
                 else { return false; }
             }
-            set => GetMMRGlobalNPC().moddedAI[1] = value.ToInt();
+            set => globalNPC.moddedAI[1] = value.ToInt();
         }
 
         public override int NpcType => NPCID.KingSlime;
 
         public KingSlime(NPC npc) : base(npc) { }
-
-        private void DoTeleport(NPC npc) {
-            npc.ai[0] = 0f;
-            npc.ai[1] = 5f;
-            SlamTimer = 0f;
-            npc.netUpdate = true;
-        }
 
         public override void PreVanillaAI(NPC npc) {
             if (npc.life < npc.lifeMax / 2 && !Main.player[npc.target].dead) {
@@ -63,7 +56,6 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
                     IsSlamming = true;
                     //To prevent cheese of hiding under something
                     npc.noTileCollide = true;
-
                 }
                 //So King Slime doesn't unintentionally horizontally move
                 if (IsSlamming) {
@@ -85,7 +77,7 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
                 if (IsSlamming && npc.collideY) {
                     IsSlamming = false;
                     if (Main.netMode != NetmodeID.MultiplayerClient) {
-                        Projectile.NewProjectile(new Vector2(npc.Center.X, npc.Bottom.Y), new Vector2(0, 0), ModContent.ProjectileType<Shockwave>(), 20, 3f);
+                        Projectile.NewProjectile(new ProjectileSource_NPC(npc), new Vector2(npc.Center.X, npc.Bottom.Y), new Vector2(0, 0), ModContent.ProjectileType<Shockwave>(), 20, 3f);
                         SoundEngine.PlaySound(SoundID.Item62, npc.Center);
                     }
                     //So the dust actually shows, just using the statement once barely shows any dust
@@ -125,5 +117,12 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
         }
 
         public override void PostAI(NPC npc) { }
+
+        private void DoTeleport(NPC npc) {
+            npc.ai[0] = 0f;
+            npc.ai[1] = 5f;
+            SlamTimer = 0f;
+            npc.netUpdate = true;
+        }
     }
 }

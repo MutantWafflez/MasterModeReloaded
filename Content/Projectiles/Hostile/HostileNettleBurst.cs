@@ -61,7 +61,7 @@ namespace MasterModeReloaded.Content.Projectiles.Hostile {
 
             Projectile.ai[0] += appearanceRate;
             if (Projectile.ai[0] >= 255 && Projectile.ai[1] < MaxBurstLength && psuedoVelocity != Vector2.Zero) {
-                HostileNettleBurst nextSegment = (HostileNettleBurst)Projectile.NewProjectileDirect(Projectile.Center + psuedoVelocity, Vector2.Zero, ModContent.ProjectileType<HostileNettleBurst>(), 30, 1f).ModProjectile;
+                HostileNettleBurst nextSegment = (HostileNettleBurst)Projectile.NewProjectileDirect(Projectile.GetProjectileSource_FromThis(), Projectile.Center + psuedoVelocity, Vector2.Zero, ModContent.ProjectileType<HostileNettleBurst>(), 30, 1f).ModProjectile;
                 nextSegment.Projectile.ai[1] = Projectile.ai[1] += 1;
                 nextSegment.psuedoVelocity = psuedoVelocity;
                 nextSegment.Projectile.netUpdate = true;
@@ -93,8 +93,8 @@ namespace MasterModeReloaded.Content.Projectiles.Hostile {
 
         #region Drawing
 
-        public override void DrawBehind(int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI) {
-            drawCacheProjsBehindNPCs.Add(index);
+        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
+            behindNPCs.Add(index);
         }
 
         #endregion

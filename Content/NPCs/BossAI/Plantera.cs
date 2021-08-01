@@ -3,6 +3,7 @@ using MasterModeReloaded.Content.Projectiles.Hostile;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -20,18 +21,18 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
         public const float ChargePhase = 4f;
 
         public float GeneralTimer {
-            get => GetMMRGlobalNPC().moddedAI[0];
-            set => GetMMRGlobalNPC().moddedAI[0] = value;
+            get => globalNPC.moddedAI[0];
+            set => globalNPC.moddedAI[0] = value;
         }
 
         public float CurrentSubPhase {
-            get => GetMMRGlobalNPC().moddedAI[1];
-            set => GetMMRGlobalNPC().moddedAI[1] = value;
+            get => globalNPC.moddedAI[1];
+            set => globalNPC.moddedAI[1] = value;
         }
 
         public float ChargeCount {
-            get => GetMMRGlobalNPC().moddedAI[2];
-            set => GetMMRGlobalNPC().moddedAI[2] = value;
+            get => globalNPC.moddedAI[2];
+            set => globalNPC.moddedAI[2] = value;
         }
 
         public override int NpcType => NPCID.Plantera;
@@ -67,7 +68,7 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
                     if (GeneralTimer == 0f) {
                         if (Main.netMode != NetmodeID.MultiplayerClient) {
                             for (int direction = 0; direction < 4; direction++) {
-                                HostileNettleBurst nettleBurst = (HostileNettleBurst)Projectile.NewProjectileDirect(npc.Center, Vector2.Zero, ModContent.ProjectileType<HostileNettleBurst>(), 30, 1f).ModProjectile;
+                                HostileNettleBurst nettleBurst = (HostileNettleBurst)Projectile.NewProjectileDirect(new ProjectileSource_NPC(npc), npc.Center, Vector2.Zero, ModContent.ProjectileType<HostileNettleBurst>(), 30, 1f).ModProjectile;
                                 nettleBurst.psuedoVelocity = new Vector2(0, -nettleBurst.Projectile.height).RotatedBy(MathHelper.ToRadians(90) * direction);
                                 NetMessage.SendData(MessageID.SyncProjectile, number: nettleBurst.Projectile.whoAmI);
                             }

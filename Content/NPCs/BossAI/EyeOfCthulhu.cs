@@ -5,27 +5,20 @@ using Terraria.Audio;
 using Terraria.ID;
 
 namespace MasterModeReloaded.Content.NPCs.BossAI {
+
     public class EyeOfCthulhu : MMRAI {
 
         public bool IsPhaseThree {
-            get
-            {
-                if (GetMMRGlobalNPC().moddedAI[0] == 1f) { return true; }
+            get {
+                if (globalNPC.moddedAI[0] == 1f) { return true; }
                 else { return false; }
             }
-            set => GetMMRGlobalNPC().moddedAI[0] = value.ToInt();
+            set => globalNPC.moddedAI[0] = value.ToInt();
         }
 
         public override int NpcType => NPCID.EyeofCthulhu;
 
         public EyeOfCthulhu(NPC npc) : base(npc) { }
-
-        private void TeleDust(NPC npc) {
-            Dust dust;
-            Vector2 position = npc.position;
-            dust = Main.dust[Dust.NewDust(position, npc.width, npc.height, 55, 0f, 0f, 0, new Color(255, 255, 255), 1.5f)];
-            dust.noGravity = true;
-        }
 
         public override void PreVanillaAI(NPC npc) {
             if (!IsPhaseThree) {
@@ -137,6 +130,13 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
         }
 
         public override void PostAI(NPC npc) {
+        }
+
+        private void TeleDust(NPC npc) {
+            Dust dust;
+            Vector2 position = npc.position;
+            dust = Main.dust[Dust.NewDust(position, npc.width, npc.height, 55, 0f, 0f, 0, new Color(255, 255, 255), 1.5f)];
+            dust.noGravity = true;
         }
     }
 }

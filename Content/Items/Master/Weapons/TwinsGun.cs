@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -48,12 +49,12 @@ namespace MasterModeReloaded.Content.Items.Master.Weapons {
             }
         }
 
-        public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
-            Vector2 shootVelocity = new Vector2(speedX, speedY);
-
+        public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
             //Two friendly cursed flame projectiles skewed 10 degrees from the center of the gun
-            Projectile.NewProjectile(position, shootVelocity.RotatedBy(MathHelper.ToRadians(-10)), ModContent.ProjectileType<FriendlyEyeFire>(), (int)(damage * 1.25f), knockBack, player.whoAmI);
-            Projectile.NewProjectile(position, shootVelocity.RotatedBy(MathHelper.ToRadians(10)), ModContent.ProjectileType<FriendlyEyeFire>(), (int)(damage * 1.25f), knockBack, player.whoAmI);
+
+            Projectile.NewProjectile(source, position, velocity.RotatedBy(MathHelper.ToRadians(-10)), ModContent.ProjectileType<FriendlyEyeFire>(), (int)(damage * 1.25f), knockback, player.whoAmI);
+            Projectile.NewProjectile(source, position, velocity.RotatedBy(MathHelper.ToRadians(10)), ModContent.ProjectileType<FriendlyEyeFire>(), (int)(damage * 1.25f), knockback, player.whoAmI);
+
             SoundEngine.PlaySound(SoundID.Item34.WithVolume(0.75f), position);
 
             return true;

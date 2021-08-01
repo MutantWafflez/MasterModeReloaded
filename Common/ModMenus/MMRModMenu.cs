@@ -10,7 +10,7 @@ namespace MasterModeReloaded.Common.ModMenus {
 
         private const string MenuTexturePath = nameof(MasterModeReloaded) + "/Assets/Textures";
 
-        public override Asset<Texture2D> Logo => ModContent.GetTexture($"{MenuTexturePath}/Misc/MMRLogo");
+        public override Asset<Texture2D> Logo => ModContent.Request<Texture2D>($"{MenuTexturePath}/Misc/MMRLogo");
 
         public override int Music => MusicID.Plantera;
 

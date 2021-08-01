@@ -2,34 +2,38 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 
 namespace MasterModeReloaded.Content.NPCs.BossAI {
+
     public class Retinazer : MMRAI {
+        public const float NormalAIPhase = 0f;
+
+        public const float AlignToTargetPhase = 1f;
+
+        public const float ChargeBarragePhase = 2f;
+
+        public const float FireBarragePhase = 3f;
 
         public float GeneralTimer {
-            get => GetMMRGlobalNPC().moddedAI[0];
-            set => GetMMRGlobalNPC().moddedAI[0] = value;
+            get => globalNPC.moddedAI[0];
+            set => globalNPC.moddedAI[0] = value;
         }
 
         public float BarragePhase {
-            get => GetMMRGlobalNPC().moddedAI[1];
-            set => GetMMRGlobalNPC().moddedAI[1] = value;
+            get => globalNPC.moddedAI[1];
+            set => globalNPC.moddedAI[1] = value;
         }
 
         public int CurrentTarget {
-            get => (int)GetMMRGlobalNPC().moddedAI[2];
-            set => GetMMRGlobalNPC().moddedAI[2] = value;
+            get => (int)globalNPC.moddedAI[2];
+            set => globalNPC.moddedAI[2] = value;
         }
 
         public override int NpcType => NPCID.Retinazer;
 
         public Retinazer(NPC npc) : base(npc) { }
-
-        public const float NormalAIPhase = 0f;
-        public const float AlignToTargetPhase = 1f;
-        public const float ChargeBarragePhase = 2f;
-        public const float FireBarragePhase = 3f;
 
         public override void PreVanillaAI(NPC npc) {
             //Will enter second phase at 60% health instead of 40%
@@ -43,7 +47,6 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
 
             //Second Phase only
             if (npc.ai[0] == 3f) {
-
                 //Whether or not Ret is in his "third phase" (just essentially do stuff at a faster rate)
                 bool isPseudoThirdPhase = npc.life < npc.lifeMax * 0.25f;
 
@@ -102,7 +105,7 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
                 else if (BarragePhase == FireBarragePhase) {
                     GeneralTimer++;
                     if (Main.netMode != NetmodeID.MultiplayerClient && GeneralTimer % 5 == 0) {
-                        int laserBarrage = Projectile.NewProjectile(npc.Center, (npc.rotation + MathHelper.ToRadians(90f)).ToRotationVector2() * 15f, ProjectileID.DeathLaser, npc.GetAttackDamage_ForProjectiles(22f, 20f), 0.5f);
+                        int laserBarrage = Projectile.NewProjectile(new ProjectileSource_NPC(npc), npc.Center, (npc.rotation + MathHelper.ToRadians(90f)).ToRotationVector2() * 15f, ProjectileID.DeathLaser, npc.GetAttackDamage_ForProjectiles(22f, 20f), 0.5f);
                         Main.projectile[laserBarrage].tileCollide = false;
                         Main.projectile[laserBarrage].alpha = 310; //This is done so that the laser looks like it properly comes out of the eye barrel
                         Main.projectile[laserBarrage].timeLeft = 60 * 3;

@@ -3,6 +3,7 @@ using MasterModeReloaded.Content.Projectiles.Hostile;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -20,23 +21,23 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
         public const float CircleAndFirePhase = 4f;
 
         public float GeneralTimer {
-            get => GetMMRGlobalNPC().moddedAI[0];
-            set => GetMMRGlobalNPC().moddedAI[0] = value;
+            get => globalNPC.moddedAI[0];
+            set => globalNPC.moddedAI[0] = value;
         }
 
         public float CirclePhase {
-            get => GetMMRGlobalNPC().moddedAI[1];
-            set => GetMMRGlobalNPC().moddedAI[1] = value;
+            get => globalNPC.moddedAI[1];
+            set => globalNPC.moddedAI[1] = value;
         }
 
         public float CenterOfCircleX {
-            get => GetMMRGlobalNPC().moddedAI[2];
-            set => GetMMRGlobalNPC().moddedAI[2] = value;
+            get => globalNPC.moddedAI[2];
+            set => globalNPC.moddedAI[2] = value;
         }
 
         public float CenterOfCircleY {
-            get => GetMMRGlobalNPC().moddedAI[3];
-            set => GetMMRGlobalNPC().moddedAI[3] = value;
+            get => globalNPC.moddedAI[3];
+            set => globalNPC.moddedAI[3] = value;
         }
 
         public override int NpcType => NPCID.Spazmatism;
@@ -60,7 +61,7 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
                 npc.ai[3] = 0f;
                 for (float projRotation = -15; projRotation <= 15; projRotation += 15) {
                     Vector2 projSpeed = (npc.DirectionTo(Main.player[npc.target].Center) * 10f).RotatedBy(MathHelper.ToRadians(projRotation));
-                    Projectile.NewProjectile(npc.Center, projSpeed, ProjectileID.CursedFlameHostile, npc.GetAttackDamage_ForProjectiles(25f, 22f), 1f);
+                    Projectile.NewProjectile(new ProjectileSource_NPC(npc), npc.Center, projSpeed, ProjectileID.CursedFlameHostile, npc.GetAttackDamage_ForProjectiles(25f, 22f), 1f);
                 }
             }
 
@@ -190,7 +191,7 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
                     GeneralTimer += rotationInRadians;
 
                     if (Main.netMode != NetmodeID.MultiplayerClient && ++npc.ai[2] % 3 == 0f) {
-                        int cursedFlames = Projectile.NewProjectile(npc.Center, Vector2.Zero, ModContent.ProjectileType<SmartCursedFlames>(), npc.GetAttackDamage_ForProjectiles(30f, 27f), 0);
+                        int cursedFlames = Projectile.NewProjectile(new ProjectileSource_NPC(npc), npc.Center, Vector2.Zero, ModContent.ProjectileType<SmartCursedFlames>(), npc.GetAttackDamage_ForProjectiles(30f, 27f), 0);
                         (Main.projectile[cursedFlames].ModProjectile as SmartCursedFlames).TargetPosition = new Vector2(CenterOfCircleX, CenterOfCircleY);
                         (Main.projectile[cursedFlames].ModProjectile as SmartCursedFlames).OriginalPosition = npc.Center;
                     }
@@ -214,7 +215,7 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
                     GeneralTimer += rotationInRadians;
 
                     if (Main.netMode != NetmodeID.MultiplayerClient && ++npc.ai[2] % 6 == 0f) {
-                        int eyeFire = Projectile.NewProjectile(npc.Center, npc.DirectionTo(new Vector2(CenterOfCircleX, CenterOfCircleY)) * 11f, ProjectileID.EyeFire, npc.GetAttackDamage_ForProjectiles(30f, 27f), 0);
+                        int eyeFire = Projectile.NewProjectile(new ProjectileSource_NPC(npc), npc.Center, npc.DirectionTo(new Vector2(CenterOfCircleX, CenterOfCircleY)) * 11f, ProjectileID.EyeFire, npc.GetAttackDamage_ForProjectiles(30f, 27f), 0);
                         Main.projectile[eyeFire].tileCollide = false;
                     }
 

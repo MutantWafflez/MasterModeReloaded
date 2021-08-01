@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using MasterModeReloaded.Common;
 using MasterModeReloaded.Common.ModMenus;
+using MasterModeReloaded.Content.NPCs;
 using Microsoft.Xna.Framework;
 using MonoMod.Cil;
 using Terraria;
@@ -51,8 +52,10 @@ namespace MasterModeReloaded.Core {
         #region Detour Methods
 
         private static void NPC_VanillaAI(On.Terraria.NPC.orig_VanillaAI orig, NPC self) {
-            if (self.GetMMRGlobalNPC().currentMMRAI != null && NPCLoader.PreAI(self) && Main.masterMode) {
-                self.GetMMRGlobalNPC().currentMMRAI.PreVanillaAI(self);
+            MMRGlobalNPC globalNPC = self.GetGlobalNPC<MMRGlobalNPC>();
+
+            if (globalNPC?.currentMMRAI != null && NPCLoader.PreAI(self) && Main.masterMode) {
+                globalNPC.currentMMRAI.PreVanillaAI(self);
             }
             orig(self);
         }
@@ -72,11 +75,11 @@ namespace MasterModeReloaded.Core {
             ILLabel falseLabel = c.DefineLabel();
 
             c.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<NPC, bool>>(npc => npc.GetMMRGlobalNPC().currentMMRAI != null && NPCLoader.PreAI(npc) && Main.masterMode);
+            c.EmitDelegate<Func<NPC, bool>>(npc => npc.globalNPC.currentMMRAI != null && NPCLoader.PreAI(npc) && Main.masterMode);
             c.Emit(Mono.Cecil.Cil.OpCodes.Brfalse_S, falseLabel);
 
             c.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<NPC, MMRGlobalNPC>>(npc => npc.GetMMRGlobalNPC());
+            c.EmitDelegate<Func<NPC, MMRGlobalNPC>>(npc => npc.globalNPC);
             c.Emit(Mono.Cecil.Cil.OpCodes.Ldfld, typeof(MMRGlobalNPC).GetField(nameof(MMRGlobalNPC.currentMMRAI), BindingFlags.Public | BindingFlags.Instance));
             c.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_0);
             c.Emit(Mono.Cecil.Cil.OpCodes.Callvirt, typeof(MMRAI).GetMethod(nameof(MMRAI.PreVanillaAI), BindingFlags.Public | BindingFlags.Instance));
@@ -84,8 +87,8 @@ namespace MasterModeReloaded.Core {
             c.MarkLabel(falseLabel);
 
             /* ^This is what this IL is translated to (with "this" referring to the given NPC instance):
-            if (this.GetMMRGlobalNPC().currentMMRAI != null && NPCLoader.PreAI(this) && Main.masterMode) {
-                this.GetMMRGlobalNPC().currentMMRAI.PreVanillaAI(this);
+            if (this.globalNPC.currentMMRAI != null && NPCLoader.PreAI(this) && Main.masterMode) {
+                this.globalNPC.currentMMRAI.PreVanillaAI(this);
              }
              *
         }

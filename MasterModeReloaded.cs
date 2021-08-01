@@ -24,17 +24,6 @@ namespace MasterModeReloaded {
         #region Loading
 
         public override void Load() {
-
-            #region Shaders
-
-            if (Main.netMode != NetmodeID.Server) {
-                Ref<Effect> verticalRef = new Ref<Effect>(GetEffect("Assets/Shaders/Screen/VerticalMirror").Value);
-                Filters.Scene["VerticalMirror"] = new Filter(new ScreenShaderData(verticalRef, "VerticallyMirror"), EffectPriority.Medium);
-                Filters.Scene["VerticalMirror"].Load();
-            }
-
-            #endregion
-
             Patches.ApplyDetourPatches();
             Patches.ApplyILPatches();
         }
