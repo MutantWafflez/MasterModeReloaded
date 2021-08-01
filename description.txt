@@ -1,14 +1,18 @@
 This mod completely throws out vanilla Master Mode and builds it from the ground up to be more fleshed out as a proper difficulty, much like Expert Mode.
 
-As it stands, in Vanilla, all Master Mode does is boost enemy stats and (spoilers) gives out pets/relics for defeating bosses. It offers absolutely nothing new the table like Expert Mode, so this is where this mod comes in.
+IMPORTANT DISCLAIMER: FOR THE CURRENT 1.4 ALPHA, ONLY THE FOLLOWING BOSSES HAVE CHANGES: King Slime, Eye of Cthulhu, The Twins, Plantera, 
+
+As it stands, in Vanilla, all Master Mode does is boost enemy stats and gives out pets/relics for defeating bosses. 
+It offers absolutely nothing new the table like Expert Mode, so this is where this mod comes in.
 
 Here are the main changes that make Master Mode more difficult than Expert Mode, but ideally more fun/statisfying:
-*Enemy stats are at their Expert level (configurable)
-*Debuff time is reverted back to its Expert level (configurable)
+
+*Enemy stats are at their Expert level (configurable) (NOT IMPLEMENTED YET)
+*Debuff time is reverted back to its Expert level (configurable) (NOT IMPLEMENTED YET)
 *Adding additional AI to all of the bosses and many regular enemies
 *Adding several new mechanics and debuffs to the environment and enemies
-*Additional Master Mode items that can either be weapons/accessories from bosses
-*Rewards for players who can survive in mediumcore/hardcore Master Mode
-*Other miscellaneous changes which can be seen on the wiki
+*Additional Master Mode items that can either be weapons/accessories from bosses (ONLY PARTIALLY IMPLEMENTED)
+*Rewards for players who can survive in mediumcore/hardcore Master Mode (NOT IMPLEMENTED YET)
+*Other miscellaneous changes which can be seen on the wiki (NOT IMPLEMENTED YET)
 
 Note: This mod changes nothing if the world is not in Master Mode.
