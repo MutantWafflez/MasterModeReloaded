@@ -17,6 +17,7 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
         //NOTE: Anytime these comments refer to "Phase 1", they mean EOL's Vanilla Phase 2, since she spawns in her Vanilla Phase 2 in MMR
         //Any references to Phase 2 is MMR's new Phase 2 (effectively Vanilla Phase 3)
         public override void PreVanillaAI(NPC npc) {
+            /*
             //Continue wing animation in our custom Phases (about 25% faster, though)
             if (npc.aiStyle == -1) {
                 if ((npc.localAI[0] += 1.25f) >= 44f) {
@@ -87,6 +88,7 @@ namespace MasterModeReloaded.Content.NPCs.BossAI {
             //Last Stand (Phase 3)
             else if (npc.ai[3] == 5f) {
             }
+            */
         }
 
         public override void AI(NPC npc) {
